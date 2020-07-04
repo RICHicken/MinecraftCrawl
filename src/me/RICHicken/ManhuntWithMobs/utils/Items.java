@@ -162,7 +162,7 @@ public class Items {
 	
 	public static ItemStack depthStriderBoots() {
 		ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-		boots.addEnchantment(Enchantment.DEPTH_STRIDER, 3);
+		boots.addEnchantment(Enchantment.DEPTH_STRIDER, 2);
 		
 		return boots;
 	}
@@ -178,7 +178,16 @@ public class Items {
 		
 		return jump;
 	}
-	
+
+	public static ItemStack phantomWings(){
+		ItemStack wings = new ItemStack(Material.ELYTRA);
+		ItemMeta meta = wings.getItemMeta();
+
+		meta.setUnbreakable(true);
+		wings.setItemMeta(meta);
+
+		return wings;
+	}
 	///////////////WITHER SKELETON
 	
 	public static ItemStack witherSkeleInflictWitherItem() {

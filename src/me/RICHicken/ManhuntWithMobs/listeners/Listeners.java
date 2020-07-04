@@ -14,9 +14,11 @@ import org.bukkit.entity.SmallFireball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -33,6 +35,8 @@ import me.RICHicken.ManhuntWithMobs.utils.Utils;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import net.md_5.bungee.api.ChatColor;
+
+import java.security.DigestException;
 
 public class Listeners implements Listener {
 
@@ -84,6 +88,18 @@ public class Listeners implements Listener {
 			}, 40L);
 
 		}
+	}
+
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event){
+		Player player = event.getPlayer();
+		//prevents mob from dropping items
+		if(DisguiseAPI.isDisguised(player)){
+			player.sendMessage(ChatColor.DARK_PURPLE + "You can't drop items as a mob!");
+			event.setCancelled(true);
+		}
+
+
 	}
 
 	@EventHandler
@@ -144,11 +160,19 @@ public class Listeners implements Listener {
 
 	@EventHandler
 	public void OnRightClick(PlayerInteractEvent event) {
-		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		Action action = event.getAction();
+		if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
 			Player hunter = event.getPlayer();
 			if (hunter.getInventory().getItemInMainHand().getType() == Material.BARRIER) {
 				hunter.damage(100000);
-			} else{
+			} else if(DisguiseAPI.isDisguised(event.getPlayer()) && action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType().isInteractable()){
+				//stop mobs from interacting with objects (chests, furnaces, levers, doors, etc.)
+
+				event.getPlayer().sendMessage(ChatColor.DARK_PURPLE + "Mobs can't interact with objects!");
+				event.setCancelled(true);
+
+			}
+				else{
 
 				switch(DisguiseAPI.getDisguise(hunter).getType().getEntityType())
 				{
@@ -161,7 +185,7 @@ public class Listeners implements Listener {
 
 								break;
 							case FEATHER:
-								hunter.setVelocity(new Vector(0, 1.5, 0));
+								hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 55, 2));
 								Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
 
 								break;
@@ -178,7 +202,7 @@ public class Listeners implements Listener {
 
 					case ENDERMAN:
 						if (hunter.getInventory().getItemInMainHand().getType() == Material.WOODEN_PICKAXE) {
-							if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+							if (action == Action.RIGHT_CLICK_BLOCK) {
 								Block block = event.getClickedBlock();
 								Location loc = block.getLocation();
 								if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
@@ -212,7 +236,7 @@ public class Listeners implements Listener {
 
 					case PHANTOM:
 						if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE) {
-							hunter.setVelocity(new Vector(0, 2.5, 0));
+							hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 10));
 							Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
 						}
 						break;
