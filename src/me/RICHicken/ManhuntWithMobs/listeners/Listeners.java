@@ -61,9 +61,7 @@ public class Listeners implements Listener {
 					hunter.sendMessage("You can't wither this!");
 				}
 			} else if (DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.CAVE_SPIDER && hunter.getInventory().getItemInMainHand().getType() == Material.SPIDER_EYE) {
-				hunter.sendMessage("You clicked");
 				if (event.getRightClicked() instanceof LivingEntity) {
-					hunter.sendMessage("on this");
 					Utils.caveSpiderPoison((LivingEntity) event.getRightClicked());
 					Utils.putItemOnCooldown(hunter, plugin, Items.caveSpiderPoison(), 300);
 				} else {
