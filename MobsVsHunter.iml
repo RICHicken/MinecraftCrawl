@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
   <component name="EclipseModuleManager">
-    <libelement value="file://C:/Users/richi/Desktop/1.15.2 with plugins/spigot-1.15.2.jar" />
-    <libelement value="file://C:/Users/richi/Desktop/my plugins/APIs/LibsDisguises-10.0.12-Github.jar" />
-    <libelement value="file://C:/Users/richi/Desktop/my plugins/APIs/ProtocolLib-4.6.0-20200606.191549-3.jar" />
+    <libelement value="file://$USER_HOME$/Desktop/1.15.2 with plugins/spigot-1.15.2.jar" />
+    <libelement value="file://$USER_HOME$/Desktop/my plugins/APIs/LibsDisguises-10.0.12-Github.jar" />
+    <libelement value="file://$USER_HOME$/Desktop/my plugins/APIs/ProtocolLib-4.6.0-20200606.191549-3.jar" />
     <src_description expected_position="1">
       <src_folder value="file://$MODULE_DIR$/src" expected_position="2" />
     </src_description>
@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library name="spigot-1.15.2.jar">
         <CLASSES>
-          <root url="file://C:/Users/richi/Desktop/1.15.2 with plugins/spigot-1.15.2.jar" />
+          <root url="file://$USER_HOME$/Desktop/1.15.2 with plugins/spigot-1.15.2.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library name="LibsDisguises-10.0.12-Github.jar">
         <CLASSES>
-          <root url="file://C:/Users/richi/Desktop/my plugins/APIs/LibsDisguises-10.0.12-Github.jar" />
+          <root url="file://$USER_HOME$/Desktop/my plugins/APIs/LibsDisguises-10.0.12-Github.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,14 +37,13 @@
     <orderEntry type="module-library">
       <library name="ProtocolLib-4.6.0-20200606.191549-3.jar">
         <CLASSES>
-          <root url="file://C:/Users/richi/Desktop/my plugins/APIs/ProtocolLib-4.6.0-20200606.191549-3.jar" />
+          <root url="file://$USER_HOME$/Desktop/my plugins/APIs/ProtocolLib-4.6.0-20200606.191549-3.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="LibsDisguises-10.0.12-Github" level="project" />
-    <orderEntry type="library" name="ProtocolLib-4.6.0-20200606.191549-3" level="project" />
     <orderEntry type="library" name="spigot-1.15.2" level="project" />
+    <orderEntry type="library" name="LibsDisguises-10.0.12-Github" level="project" />
   </component>
 </module>

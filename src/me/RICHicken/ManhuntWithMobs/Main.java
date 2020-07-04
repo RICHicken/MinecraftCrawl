@@ -9,7 +9,7 @@ import me.RICHicken.ManhuntWithMobs.commands.stopharass;
 import me.RICHicken.ManhuntWithMobs.listeners.Listeners;
 
 
-
+//Manhunt but with mobs!
 public class Main extends JavaPlugin{
 	@Override
 	public void onEnable() {

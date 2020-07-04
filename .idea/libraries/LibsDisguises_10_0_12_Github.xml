@@ -1,13 +1,10 @@
 <component name="libraryTable">
   <library name="LibsDisguises-10.0.12-Github">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Desktop/spigot/LibsDisguises-10.0.12-Github.jar!/" />
-      <root url="jar://$USER_HOME$/Desktop/spigot/ProtocolLib-4.6.0-20200606.191549-3.jar!/" />
-      <root url="jar://$USER_HOME$/Desktop/spigot/spigot-1.15.2.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/my plugins/APIs/LibsDisguises-10.0.12-Github.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/my plugins/APIs/ProtocolLib-4.6.0-20200606.191549-3.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/Desktop/spigot/spigot-1.15.2.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>
