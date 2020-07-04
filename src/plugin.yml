@@ -1,0 +1,15 @@
+main: me.RICHicken.ManhuntWithMobs.Main
+name: ManhuntWithMobs
+version: 1.0
+author: RICHicken
+depend: [LibsDisguises]
+commands:
+  harassplayer:
+   description: Starts the MobsvsSpeedrunner Gamemode.
+   aliases: [harass]
+  gettags:
+   description: (Used for debugging) Tells user a Player's tags.
+  stopharass:
+   description: Stops the MobsvsSpeedrunner Gamemode.
+  disguisecheck:
+   description: Checks if player is diguised. (Used for debugging).
