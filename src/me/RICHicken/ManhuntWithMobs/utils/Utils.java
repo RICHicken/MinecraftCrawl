@@ -45,9 +45,7 @@ public class Utils {
 		
 		MobDisguise m;
 		hunter.getInventory().clear();
-		
-		
-		//install inteleJ and convert to switch
+		hunter.setGameMode(GameMode.ADVENTURE);
 
 		switch (mob) {
 			case BLAZE:
@@ -94,12 +92,12 @@ public class Utils {
 				m = zombiePigman(hunter);
 				break;
 			default:
+
+				hunter.setGameMode(GameMode.SPECTATOR);
 				return false;
 		}
 		
 		e.remove();
-		hunter.setGameMode(GameMode.ADVENTURE);
-
 
 		hunter.sendMessage(ChatColor.RED + "You are now a " + mob.toString() + "!");
 		m.setSelfDisguiseVisible(false);
@@ -130,15 +128,15 @@ public class Utils {
 	}
 	
 	private static MobDisguise phantom(Player hunter) {
-		hunter.getInventory().addItem(new ItemStack(Material.WOODEN_SWORD));
-		hunter.getInventory().setChestplate(new ItemStack(Material.ELYTRA));
+		hunter.getInventory().addItem(new ItemStack(Material.STONE_AXE));
+		hunter.getInventory().setChestplate(Items.phantomWings());
 		hunter.getInventory().addItem(Items.phantomJumpItem());
 		
 		return new MobDisguise(DisguiseType.PHANTOM);
 	}
 	
 	private static MobDisguise blaze(Player hunter) {
-		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 2));
+		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 5));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 99999, 0));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		
@@ -215,8 +213,10 @@ public class Utils {
 	}
 	
 	private static MobDisguise zombie(Player hunter) {
+		hunter.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
 		hunter.getInventory().addItem(Items.zombieAxe());
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 0));
+		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0));
 		
 		return new MobDisguise(DisguiseType.ZOMBIE);
 	}
@@ -224,7 +224,9 @@ public class Utils {
 	private static MobDisguise zombiePigman(Player hunter) {
 		hunter.getInventory().addItem(new ItemStack(Material.GOLDEN_SWORD));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
-		
+		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0));
+		hunter.damage(10);
+
 		return new MobDisguise(DisguiseType.PIG_ZOMBIE);
 	}
 	
@@ -314,6 +316,11 @@ public class Utils {
 			case OBSIDIAN:
 			case SPAWNER:
 			case NETHER_PORTAL:
+			case CHEST:
+			case FURNACE:
+			case SMOKER:
+			case BLAST_FURNACE:
+
 				return false;
 
 			default:

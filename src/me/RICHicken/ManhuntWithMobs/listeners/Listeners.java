@@ -217,7 +217,7 @@ public class Listeners implements Listener {
 							hunter.getLocation().getBlock().setType(selectedBlock.getType());
 							hunter.getInventory().removeItem(selectedBlock);
 
-							Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 80);
+							Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 40);
 						} else if (hunter.getInventory().getItemInMainHand().getType() == Material.POPPED_CHORUS_FRUIT) {
 							Utils.endermanTeleport(hunter);
 							hunter.getInventory().removeItem(Items.endermanTeleportItem());
@@ -236,7 +236,7 @@ public class Listeners implements Listener {
 
 					case PHANTOM:
 						if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE) {
-							hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 10));
+							hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 12));
 							Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
 						}
 						break;
