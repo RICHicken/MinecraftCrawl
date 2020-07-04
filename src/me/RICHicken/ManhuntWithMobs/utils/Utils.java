@@ -21,6 +21,7 @@ import me.RICHicken.ManhuntWithMobs.Main;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.util.Vector;
 
 public class Utils {
 	
@@ -207,6 +208,7 @@ public class Utils {
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999, 0));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 0));
 		hunter.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
+		hunter.getInventory().addItem(Items.spiderClimb());
 		hunter.damage(4);
 
 		return new MobDisguise(DisguiseType.SPIDER);	
@@ -334,5 +336,20 @@ public class Utils {
 		blockLocation.getBlock().setType(Material.AIR);
 		
 		return true;
+	}
+
+	public static void spiderClimb(Player player, Main plugin){
+		if((Math.abs(player.getLocation().getBlockX()) - Math.abs(player.getLocation().getX()) == 0.3 ||
+				Math.abs(player.getLocation().getBlockX()) - Math.abs(player.getLocation().getX()) == 0.7 ||
+				Math.abs(player.getLocation().getBlockZ()) - Math.abs(player.getLocation().getZ()) == 0.3 ||
+				Math.abs(player.getLocation().getBlockZ()) - Math.abs(player.getLocation().getZ()) == 0.3))
+		{
+			player.setVelocity(new Vector(player.getVelocity().getX(), 0.3, player.getVelocity().getZ()));
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				public void run() {
+					spiderClimb(player, plugin);
+				}
+			}, 5l);
+		}
 	}
 }

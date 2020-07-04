@@ -241,15 +241,23 @@ public class Listeners implements Listener {
 						}
 						break;
 
+					case SPIDER:
+					case CAVE_SPIDER:
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
+								(Math.abs(hunter.getLocation().getBlockX()) - Math.abs(hunter.getLocation().getX()) == 0.3 ||
+										Math.abs(hunter.getLocation().getBlockX()) - Math.abs(hunter.getLocation().getX()) == 0.7 ||
+										Math.abs(hunter.getLocation().getBlockZ()) - Math.abs(hunter.getLocation().getZ()) == 0.3 ||
+										Math.abs(hunter.getLocation().getBlockZ()) - Math.abs(hunter.getLocation().getZ()) == 0.3))
+						{
+							Utils.spiderClimb(hunter, plugin);
+
+						}
+						break;
+
 					default:
 						break;
 				}
-
 			}
-
-
-
-
 /*
 			 if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
 				Utils.creeperExplode(hunter);

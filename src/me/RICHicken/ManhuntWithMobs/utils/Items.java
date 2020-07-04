@@ -132,6 +132,20 @@ public class Items {
 		return pick;
 		
 	}
+
+	/////////////////////////// SPIDER
+
+	public static ItemStack spiderClimb() {
+		ItemStack ladder = new ItemStack(Material.LADDER);
+		ItemMeta meta = ladder.getItemMeta();
+
+		meta.setDisplayName("Climb");
+		ladder.setItemMeta(meta);
+
+		return ladder;
+
+	}
+
 	/////////////////////////// CAVE SPIDER
 	
 	public static ItemStack caveSpiderPoison() {
