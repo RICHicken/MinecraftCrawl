@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
@@ -247,14 +248,14 @@ public class Listeners implements Listener {
 						hunter.sendMessage("z = " + Double.toString(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ())));
 
 						if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
-								(Math.abs(Math.round(Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX())) * 10)) == 3 ||
-										Math.abs(Math.round(Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX())) * 10)) == 7 ||
-										Math.abs(Math.round(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ()) * 10)) == 3 ||
-										Math.abs(Math.round(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ()) * 10)) == 7))
+								(hunter.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR ||
+										hunter.getLocation().getBlock().getRelative(BlockFace.SOUTH).getType() != Material.AIR ||
+										hunter.getLocation().getBlock().getRelative(BlockFace.EAST).getType() != Material.AIR ||
+										hunter.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR))
 						{
+
 							hunter.sendMessage("passed!");
 							Utils.spiderClimb(hunter, plugin);
-
 						}
 						break;
 

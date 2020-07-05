@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -339,10 +340,10 @@ public class Utils {
 	}
 
 	public static void spiderClimb(Player player, Main plugin){
-		if((Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 3 ||
-				Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 7 ||
-				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 3 ||
-				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 7))
+		if(player.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR ||
+				player.getLocation().getBlock().getRelative(BlockFace.SOUTH).getType() != Material.AIR ||
+				player.getLocation().getBlock().getRelative(BlockFace.EAST).getType() != Material.AIR ||
+				player.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR)
 		{
 			player.setVelocity(new Vector(player.getVelocity().getX(), 0.3, player.getVelocity().getZ()));
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -351,5 +352,12 @@ public class Utils {
 				}
 			}, 5l);
 		}
+
+		/*
+		(Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 3 ||
+				Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 7 ||
+				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 3 ||
+				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 7)
+		 */
 	}
 }
