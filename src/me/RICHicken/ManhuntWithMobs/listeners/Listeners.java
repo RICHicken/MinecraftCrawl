@@ -247,10 +247,10 @@ public class Listeners implements Listener {
 						hunter.sendMessage("z = " + Double.toString(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ())));
 
 						if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
-								(Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX())) == 0.3 ||
-										Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX())) == 0.7 ||
-										Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ()) == 0.3 ||
-										Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ()) == 0.3))
+								(Math.abs(Math.round(Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX())) * 10)) == 3 ||
+										Math.abs(Math.round(Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX())) * 10)) == 7 ||
+										Math.abs(Math.round(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ()) * 10)) == 3 ||
+										Math.abs(Math.round(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ()) * 10)) == 7))
 						{
 							hunter.sendMessage("passed!");
 							Utils.spiderClimb(hunter, plugin);

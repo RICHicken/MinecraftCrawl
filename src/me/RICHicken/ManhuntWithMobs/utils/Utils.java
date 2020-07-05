@@ -339,10 +339,10 @@ public class Utils {
 	}
 
 	public static void spiderClimb(Player player, Main plugin){
-		if((Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) == 0.3 ||
-				 Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) == 0.7 ||
-				Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) == 0.3 ||
-				Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) == 0.3))
+		if((Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 3 ||
+				Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 7 ||
+				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 3 ||
+				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 7))
 		{
 			player.setVelocity(new Vector(player.getVelocity().getX(), 0.3, player.getVelocity().getZ()));
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
