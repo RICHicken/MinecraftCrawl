@@ -44,7 +44,5 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="LibsDisguises-10.0.12-Github" level="project" />
-    <orderEntry type="library" name="ProtocolLib-4.6.0-20200606.191549-3" level="project" />
-    <orderEntry type="library" name="spigot-1.15.2" level="project" />
   </component>
 </module>

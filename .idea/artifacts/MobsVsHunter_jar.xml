@@ -4,9 +4,7 @@
     <root id="archive" name="MobsVsHunter.jar">
       <element id="module-output" name="MobsVsHunter" />
       <element id="library" level="module" name="ProtocolLib-4.6.0-20200606.191549-3.jar" module-name="MobsVsHunter" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/spigot/LibsDisguises-10.0.12-Github.jar" path-in-jar="/" />
       <element id="library" level="module" name="LibsDisguises-10.0.12-Github.jar" module-name="MobsVsHunter" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/spigot/ProtocolLib-4.6.0-20200606.191549-3.jar" path-in-jar="/" />
       <element id="file-copy" path="$PROJECT_DIR$/MobsVsHunter.iml" />
       <element id="file-copy" path="$PROJECT_DIR$/.classpath" />
       <element id="file-copy" path="$PROJECT_DIR$/.project" />

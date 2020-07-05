@@ -244,8 +244,6 @@ public class Listeners implements Listener {
 
 					case SPIDER:
 					case CAVE_SPIDER:
-						hunter.sendMessage("x = " + Double.toString(Math.abs(hunter.getLocation().getX() - Math.abs(hunter.getLocation().getBlockX()))));
-						hunter.sendMessage("z = " + Double.toString(Math.abs(hunter.getLocation().getZ()) - Math.abs(hunter.getLocation().getBlockZ())));
 
 						if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
 								(hunter.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR ||
@@ -254,7 +252,6 @@ public class Listeners implements Listener {
 										hunter.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR))
 						{
 
-							hunter.sendMessage("passed!");
 							Utils.spiderClimb(hunter, plugin);
 						}
 						break;
