@@ -107,7 +107,8 @@ public class Utils {
 		m.startDisguise();
 	
 
-		hunter.setFoodLevel(17);
+		hunter.setFoodLevel(16);
+		hunter.getInventory().addItem(new ItemStack(Material.POTATO, 64));
 		hunter.getInventory().addItem(Items.escapeBody());
 		
 		return true;
@@ -330,7 +331,6 @@ public class Utils {
 				break;
 
 		}
-
 
 		enderman.getInventory().addItem(new ItemStack(block));
 		

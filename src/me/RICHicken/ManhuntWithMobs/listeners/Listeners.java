@@ -19,10 +19,7 @@ import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -92,6 +89,25 @@ public class Listeners implements Listener {
 	}
 
 	@EventHandler
+	public void onConsume(PlayerItemConsumeEvent event){
+		Player player = event.getPlayer();
+
+		if(DisguiseAPI.isDisguised(player) && player.getInventory().getItemInMainHand().getType().equals(Material.POTATO)){
+			player.setFoodLevel(16);
+		}
+		//if the player has the glowing effect, give it back after they drink milk.
+		else if(player.hasPotionEffect(PotionEffectType.GLOWING) && player.getInventory().getItemInMainHand().getType().equals(Material.MILK_BUCKET)){
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					public void run() {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
+					}
+				}, 3L);
+		}
+
+		//use this to give doppleganger weakness if they drink milk.
+	}
+
+	@EventHandler
 	public void onDrop(PlayerDropItemEvent event){
 		Player player = event.getPlayer();
 		//prevents mob from dropping items
@@ -116,9 +132,21 @@ public class Listeners implements Listener {
 			event.getDrops().clear();
 			event.setDroppedExp(5);
 			// drop mob loot from loot table
+			EntityType playerEntityDisguise = DisguiseAPI.getDisguise(player).getType().getEntityType();
+			switch (playerEntityDisguise){
+				case ENDERMAN:
+//					for(ItemStack i : player.getInventory().getContents()){
+//						if(i.getType() != Material.AIR && i.getType().isBlock() && (i.getType() != Material.BARRIER)){
+//							player.getWorld().dropItemNaturally(playerLocation, i);
+//						}
+//					}
+					break;
+				default:
+					break;
+			}
 
-			Drops.dropItems(player.getWorld(), playerLocation,
-					DisguiseAPI.getDisguise(player).getType().getEntityType());
+			Drops.dropItems(player.getWorld(), playerLocation, playerEntityDisguise);
+			player.sendMessage("you made it");
 
 			// make player's gamemode into spectator
 			player.setFlySpeed(.1f);
@@ -136,14 +164,15 @@ public class Listeners implements Listener {
 	@EventHandler
 	public void hunterRespawn(PlayerRespawnEvent event) {
 		Player hunter = event.getPlayer();
+		Location deathLocation = hunter.getLocation();
 
-		//teleports player back to hunter
+		//teleports player back to where they died
 		if (Helpers.hasHunterTag(hunter)) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
-					hunter.teleport(Bukkit.getPlayerExact(Helpers.getHunterTarget(hunter)));
+					hunter.teleport(deathLocation);
 				}
-			}, 5L);
+			}, 3L);
 		}
 
 		if (DisguiseAPI.isDisguised(hunter)) {
@@ -161,105 +190,103 @@ public class Listeners implements Listener {
 
 	@EventHandler
 	public void OnRightClick(PlayerInteractEvent event) {
-		Action action = event.getAction();
-		if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-			Player hunter = event.getPlayer();
-			if (hunter.getInventory().getItemInMainHand().getType() == Material.BARRIER) {
-				hunter.damage(100000);
-			} else if(DisguiseAPI.isDisguised(event.getPlayer()) && action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType().isInteractable()){
-				//stop mobs from interacting with objects (chests, furnaces, levers, doors, etc.)
+		if (DisguiseAPI.isDisguised(event.getPlayer())) {
+			Action action = event.getAction();
+			if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+				Player hunter = event.getPlayer();
+				if (hunter.getInventory().getItemInMainHand().getType() == Material.BARRIER) {
+					hunter.damage(100000);
+				} else if (DisguiseAPI.isDisguised(event.getPlayer()) && action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType().isInteractable()) {
+					//stop mobs from interacting with objects (chests, furnaces, levers, doors, etc.)
 
-				event.getPlayer().sendMessage(ChatColor.DARK_PURPLE + "Mobs can't interact with objects!");
-				event.setCancelled(true);
+					event.getPlayer().sendMessage(ChatColor.DARK_PURPLE + "Mobs can't interact with objects!");
+					event.setCancelled(true);
 
-			}
-				else{
+				} else {
 
-				switch(DisguiseAPI.getDisguise(hunter).getType().getEntityType())
-				{
-					case BLAZE:
-						switch (hunter.getInventory().getItemInMainHand().getType()) {
-							case BLAZE_ROD:
+					switch (DisguiseAPI.getDisguise(hunter).getType().getEntityType()) {
+						case BLAZE:
+							switch (hunter.getInventory().getItemInMainHand().getType()) {
+								case BLAZE_ROD:
 
-								Utils.shootBlazeFireballVolley(hunter, plugin);
-								Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
+									Utils.shootBlazeFireballVolley(hunter, plugin);
+									Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
 
-								break;
-							case FEATHER:
-								hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 55, 2));
-								Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
+									break;
+								case FEATHER:
+									hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 55, 2));
+									Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
 
-								break;
-							default:
-								break;
-						}
-						break;
-
-					case CREEPER:
-						if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
-							Utils.creeperExplode(hunter);
-						}
-						break;
-
-					case ENDERMAN:
-						if (hunter.getInventory().getItemInMainHand().getType() == Material.WOODEN_PICKAXE) {
-							if (action == Action.RIGHT_CLICK_BLOCK) {
-								Block block = event.getClickedBlock();
-								Location loc = block.getLocation();
-								if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
-									hunter.getInventory().removeItem(Items.endermanPickUpBlockItem());
-								} else {
-									hunter.sendMessage(ChatColor.LIGHT_PURPLE + "You can not pick up this block!");
-								}
+									break;
+								default:
+									break;
 							}
+							break;
 
-						} else if (hunter.getInventory().getItemInMainHand().getType().isBlock() && hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
-							ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
-							hunter.getLocation().getBlock().setType(selectedBlock.getType());
-							hunter.getInventory().removeItem(selectedBlock);
+						case CREEPER:
+							if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
+								Utils.creeperExplode(hunter);
+							}
+							break;
 
-							Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 40);
-						} else if (hunter.getInventory().getItemInMainHand().getType() == Material.POPPED_CHORUS_FRUIT) {
-							Utils.endermanTeleport(hunter);
-							hunter.getInventory().removeItem(Items.endermanTeleportItem());
+						case ENDERMAN:
+							if (hunter.getInventory().getItemInMainHand().getType() == Material.WOODEN_PICKAXE) {
+								if (action == Action.RIGHT_CLICK_BLOCK) {
+									Block block = event.getClickedBlock();
+									Location loc = block.getLocation();
+									if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
+										hunter.getInventory().removeItem(Items.endermanPickUpBlockItem());
+									} else {
+										hunter.sendMessage(ChatColor.LIGHT_PURPLE + "You can not pick up this block!");
+									}
+								}
 
-						}
-						break;
+							} else if (hunter.getInventory().getItemInMainHand().getType().isBlock() && hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
+								ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
+								hunter.getLocation().getBlock().setType(selectedBlock.getType());
+								hunter.getInventory().removeItem(selectedBlock);
 
-					case GHAST:
-						if (hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
+								Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 40);
+							} else if (hunter.getInventory().getItemInMainHand().getType() == Material.POPPED_CHORUS_FRUIT) {
+								Utils.endermanTeleport(hunter);
+								hunter.getInventory().removeItem(Items.endermanTeleportItem());
 
-							hunter.launchProjectile(Fireball.class);
-							Utils.putItemOnCooldown(hunter, plugin, Items.ghastFireBallItem(), 45);
+							}
+							break;
 
-						}
-						break;
+						case GHAST:
+							if (hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
 
-					case PHANTOM:
-						if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE) {
-							hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 12));
-							Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
-						}
-						break;
+								hunter.launchProjectile(Fireball.class);
+								Utils.putItemOnCooldown(hunter, plugin, Items.ghastFireBallItem(), 45);
 
-					case SPIDER:
-					case CAVE_SPIDER:
+							}
+							break;
 
-						if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
-								(hunter.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR ||
-										hunter.getLocation().getBlock().getRelative(BlockFace.SOUTH).getType() != Material.AIR ||
-										hunter.getLocation().getBlock().getRelative(BlockFace.EAST).getType() != Material.AIR ||
-										hunter.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR))
-						{
+						case PHANTOM:
+							if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE) {
+								hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 12));
+								Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
+							}
+							break;
 
-							Utils.spiderClimb(hunter, plugin);
-						}
-						break;
+						case SPIDER:
+						case CAVE_SPIDER:
 
-					default:
-						break;
+							if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
+									(hunter.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR ||
+											hunter.getLocation().getBlock().getRelative(BlockFace.SOUTH).getType() != Material.AIR ||
+											hunter.getLocation().getBlock().getRelative(BlockFace.EAST).getType() != Material.AIR ||
+											hunter.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR)) {
+
+								Utils.spiderClimb(hunter, plugin);
+							}
+							break;
+
+						default:
+							break;
+					}
 				}
-			}
 /*
 			 if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
 				Utils.creeperExplode(hunter);
@@ -315,7 +342,7 @@ public class Listeners implements Listener {
 				Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
 			}
 			*/
+			}
 		}
 	}
-
 }
