@@ -49,6 +49,8 @@ public class Drops {
 			case DROWNED:
 				drowned(world, loc);
 				break;
+			case WITCH:
+				witch(world, loc);
 			default:
 				break;
 		}
@@ -186,6 +188,15 @@ public class Drops {
 		
 		if(Math.random() <= 0.25) {
 			w.dropItemNaturally(l, Items.rareZombieDrops());
+		}
+	}
+
+	private static void witch(World w, Location l) {
+		Random r = new Random();
+		for(int i=0; i<6; i++) {
+			if(Math.random() <= 0.125) {
+
+			}
 		}
 	}
 }

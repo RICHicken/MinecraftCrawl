@@ -93,6 +93,9 @@ public class Utils {
 			case PIG_ZOMBIE:
 				m = zombiePigman(hunter);
 				break;
+			case WITCH:
+				m = witch(hunter);
+				break;
 			default:
 
 				hunter.setGameMode(GameMode.SPECTATOR);
@@ -232,6 +235,18 @@ public class Utils {
 		hunter.damage(10);
 
 		return new MobDisguise(DisguiseType.PIG_ZOMBIE);
+	}
+
+	private static MobDisguise witch(Player hunter){
+		hunter.getInventory().addItem(Items.witchPotionFireWater());
+		hunter.getInventory().addItem(Items.witchPotionHarming());
+		hunter.getInventory().addItem(Items.witchPotionHealing());
+		hunter.getInventory().addItem(Items.witchPotionPoison());
+		hunter.getInventory().addItem(Items.witchPotionSlowness());
+		hunter.getInventory().addItem(Items.witchPotionWeakness());
+		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 1));
+
+		return new MobDisguise(DisguiseType.WITCH);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////

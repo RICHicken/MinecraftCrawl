@@ -282,7 +282,20 @@ public class Listeners implements Listener {
 								Utils.spiderClimb(hunter, plugin);
 							}
 							break;
+						case WITCH:
+							if(hunter.getInventory().getItemInMainHand().getType() == Material.SPLASH_POTION) {
+								long cooldown = 40;
 
+								if(hunter.getInventory().getItemInMainHand() == Items.witchPotionHarming()){
+									cooldown = 80;
+								}
+
+								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionHarming(), cooldown);
+								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionHealing(), cooldown);
+								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionPoison(), cooldown);
+								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionSlowness(), cooldown);
+								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionWeakness(), cooldown);
+							}
 						default:
 							break;
 					}

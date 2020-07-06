@@ -2,6 +2,7 @@ package me.RICHicken.ManhuntWithMobs.utils;
 
 import java.util.Random;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,9 @@ import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_15_R1.Item;
 
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Items {
 	public static ItemStack bow() {
@@ -211,5 +215,74 @@ public class Items {
 		inflict.setItemMeta(meta);
 		
 		return inflict;
+	}
+
+	///////////////WITCH
+
+	public static ItemStack witchPotionWeakness() {
+		ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		meta.setDisplayName("Weakness");
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.WEAKNESS, 1200, 0), false);
+		meta.setColor(Color.fromRGB(150, 150, 150));
+		potion.setItemMeta(meta);
+
+		return potion;
+	}
+
+	public static ItemStack witchPotionHarming() {
+		ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		meta.setDisplayName("Harming");
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 0, 0), false);
+		meta.setColor(Color.fromRGB(100, 0, 100));
+		potion.setItemMeta(meta);
+
+		return potion;
+	}
+
+	public static ItemStack witchPotionHealing() {
+		ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		meta.setDisplayName("Healing");
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.HEAL, 0, 0), false);
+		meta.setColor(Color.fromRGB(255, 0, 255));
+		potion.setItemMeta(meta);
+
+		return potion;
+	}
+
+	public static ItemStack witchPotionFireWater() {
+		ItemStack potion = new ItemStack(Material.POTION);
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		meta.setDisplayName("Fire & Water Resistance");
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1200, 0), false);
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 1200, 0), false);
+		meta.setColor(Color.fromRGB(30, 10, 180));
+		potion.setItemMeta(meta);
+
+		return potion;
+	}
+
+	public static ItemStack witchPotionSlowness() {
+		ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		meta.setDisplayName("Slowness");
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.SLOW, 1200, 0), false);
+		meta.setColor(Color.fromRGB(40, 40, 40));
+		potion.setItemMeta(meta);
+
+		return potion;
+	}
+
+	public static ItemStack witchPotionPoison() {
+		ItemStack potion = new ItemStack(Material.SPLASH_POTION);
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		meta.setDisplayName("Poison");
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.POISON, 200, 0), false);
+		meta.setColor(Color.fromRGB(70, 120, 0));
+		potion.setItemMeta(meta);
+
+		return potion;
 	}
 }
