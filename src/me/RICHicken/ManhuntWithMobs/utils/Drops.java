@@ -193,10 +193,17 @@ public class Drops {
 
 	private static void witch(World w, Location l) {
 		Random r = new Random();
-		for(int i=0; i<6; i++) {
-			if(Math.random() <= 0.125) {
+		int first = r.nextInt(7);
+		int second = r.nextInt(7), third = r.nextInt(7);
 
-			}
+		while(second == first){
+			second = r.nextInt(7);
 		}
+
+		while(third == second || third == first){
+			third = r.nextInt(7);
+		}
+
+		Utils.dropWitchItems(first, second, third, w, l);
 	}
 }

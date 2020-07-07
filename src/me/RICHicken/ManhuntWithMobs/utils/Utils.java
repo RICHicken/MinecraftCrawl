@@ -2,10 +2,7 @@ package me.RICHicken.ManhuntWithMobs.utils;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -374,5 +371,25 @@ public class Utils {
 				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 3 ||
 				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 7)
 		 */
+	}
+
+	public static void dropWitchItems(int i1, int i2, int i3, World w, Location l){
+		Random r = new Random();
+		int count = r.nextInt(3);
+		Material[] drops = new Material[]{Material.GLASS_BOTTLE, Material.GLOWSTONE_DUST, Material.GUNPOWDER,
+				Material.REDSTONE, Material.SPIDER_EYE, Material.SUGAR, Material.STICK};
+
+		if (count != 0){
+			w.dropItemNaturally(l, new ItemStack(drops[i1], count));
+		}
+
+		if (count != 0){
+			w.dropItemNaturally(l, new ItemStack(drops[i2], count));
+		}
+
+		if (count != 0){
+			w.dropItemNaturally(l, new ItemStack(drops[i3], count));
+		}
+
 	}
 }
