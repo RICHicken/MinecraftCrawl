@@ -45,8 +45,9 @@ public class Helpers {
 		boolean found = false;
 		while(tags.hasNext()) {
 			tag = tags.next();
-			if (tag.toString().substring(0,10).equals("harassing:")) {
+			if (tag.startsWith("harassing:")) {
 				hunter.removeScoreboardTag(tag.toString());
+				hunter.setCanPickupItems(true);
 				found = true;
 			}
 		}

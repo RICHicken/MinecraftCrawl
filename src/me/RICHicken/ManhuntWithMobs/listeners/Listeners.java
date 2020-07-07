@@ -216,7 +216,6 @@ public class Listeners implements Listener {
 					Helpers.removeHunterTag(hunter);
 					Helpers.giveHunterTag(player, hunter);
 					hunter.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
-					hunter.setCanPickupItems(true);
 				}
 
 			}
