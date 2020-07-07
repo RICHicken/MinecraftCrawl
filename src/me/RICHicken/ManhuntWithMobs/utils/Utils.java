@@ -321,24 +321,11 @@ public class Utils {
 	public static void creeperExplode(Player hunter) {
 		Creeper creeper = (Creeper) hunter.getWorld().spawnEntity(hunter.getLocation(), EntityType.CREEPER);
 		creeper.ignite();
-		hunter.damage(100000);
+		hunter.damage(100);
 	}
-	
-	private static Material[] notPickupable() {
-		Material[] notPickupable = new Material[] {Material.BEDROCK, Material.END_PORTAL_FRAME, 
-				Material.END_PORTAL, Material.OBSIDIAN, Material.SPAWNER, Material.NETHER_PORTAL};
-		
-		return notPickupable;
-	
-	}
-	
+
 	public static boolean endermanGiveBlock(Player enderman, Material block, Location blockLocation) {
 		
-/*
-		for(Material m : Utils.notPickupable()) {
-			if(block == m) return false;
-		}
-*/
 		switch(block){
 			case BEDROCK:
 			case END_PORTAL_FRAME:

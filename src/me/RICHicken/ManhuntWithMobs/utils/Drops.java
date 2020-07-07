@@ -5,12 +5,17 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 public class Drops {
 
 	public static void dropItems(World world, Location loc, EntityType mob) {
+		LivingEntity entity = (LivingEntity) world.spawnEntity(loc, mob);
+		entity.damage(100);
+		/*
 		switch (mob) {
 			case BLAZE:
 				blaze(world, loc);
@@ -58,6 +63,7 @@ public class Drops {
 			default:
 				break;
 		}
+		 */
 	}
 	
 	private static void phantom(World w, Location l) {
