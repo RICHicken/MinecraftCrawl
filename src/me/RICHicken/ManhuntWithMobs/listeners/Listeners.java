@@ -78,7 +78,18 @@ public class Listeners implements Listener {
 		if (DisguiseAPI.isDisguised(event.getEntity())) {
 			Player hunter = (Player) event.getEntity();
 
-			long cooldown = 40;
+			switch (DisguiseAPI.getDisguise(hunter).getType()){
+				case PILLAGER:
+					Utils.giveItemBackAfter(hunter, plugin, new ItemStack(Material.ARROW), 60);
+					break;
+				case SKELETON:
+					Utils.putItemOnCooldown(hunter, plugin, new ItemStack(Material.ARROW), 40);
+				default:
+					break;
+			}
+
+
+			/* long cooldown = 40;
 			if(DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.PILLAGER){
 				cooldown = 60;
 			}
@@ -88,7 +99,7 @@ public class Listeners implements Listener {
 				public void run() {
 					hunter.getInventory().addItem(new ItemStack(Material.ARROW));
 				}
-			}, cooldown);
+			}, cooldown);*/
 
 		}
 	}
@@ -151,7 +162,6 @@ public class Listeners implements Listener {
 			}
 
 			Drops.dropItems(player.getWorld(), playerLocation, playerEntityDisguise);
-			player.sendMessage("you made it");
 
 			// make player's gamemode into spectator
 			player.setFlySpeed(.1f);
@@ -295,11 +305,19 @@ public class Listeners implements Listener {
 									cooldown = 80;
 								}
 
-								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionHarming(), cooldown);
-								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionHealing(), cooldown);
-								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionPoison(), cooldown);
-								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionSlowness(), cooldown);
-								Utils.putItemOnCooldown(hunter, plugin, Items.witchPotionWeakness(), cooldown);
+
+
+								Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+									public void run() {
+										hunter.getInventory().remove(Material.SPLASH_POTION);
+									}
+								}, 1);
+
+								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionHarming(), cooldown);
+								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionHealing(), cooldown);
+								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionPoison(), cooldown);
+								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionSlowness(), cooldown);
+								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionWeakness(), cooldown);
 							}
 						default:
 							break;
