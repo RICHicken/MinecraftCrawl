@@ -41,7 +41,7 @@ public class harassplayer implements CommandExecutor{
 					hunter.addScoreboardTag("harassing: " + target.getDisplayName());
 					hunter.setCanPickupItems(false);
 					
-					target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 999999999, 0));
+					target.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
 					target.sendMessage(ChatColor.RED + "You are now getting harassed by " + hunter.getDisplayName() + "!");
 					
 				}else {
@@ -50,7 +50,7 @@ public class harassplayer implements CommandExecutor{
 			}			
 			
 		} else {
-			System.out.println("You need to be a player to execute this command.");
+			System.out.println("Only players can execute this command");
 		}
 		
 		return false;

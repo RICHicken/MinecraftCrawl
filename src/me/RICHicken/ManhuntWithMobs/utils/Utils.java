@@ -111,7 +111,6 @@ public class Utils {
 	
 
 		hunter.setFoodLevel(16);
-		hunter.getInventory().addItem(new ItemStack(Material.POTATO, 64));
 		hunter.getInventory().addItem(Items.escapeBody());
 		
 		return true;

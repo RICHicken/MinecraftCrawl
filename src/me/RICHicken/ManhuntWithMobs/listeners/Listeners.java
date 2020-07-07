@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -108,11 +109,8 @@ public class Listeners implements Listener {
 	public void onConsume(PlayerItemConsumeEvent event){
 		Player player = event.getPlayer();
 
-		if(DisguiseAPI.isDisguised(player) && player.getInventory().getItemInMainHand().getType().equals(Material.POTATO)){
-			player.setFoodLevel(16);
-		}
 		//if the player has the glowing effect, give it back after they drink milk.
-		else if(player.hasPotionEffect(PotionEffectType.GLOWING) && player.getInventory().getItemInMainHand().getType().equals(Material.MILK_BUCKET)){
+		if(player.hasPotionEffect(PotionEffectType.GLOWING) && player.getInventory().getItemInMainHand().getType().equals(Material.MILK_BUCKET)){
 				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 					public void run() {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
@@ -143,7 +141,7 @@ public class Listeners implements Listener {
 			// save location of player death
 			Location playerLocation = player.getLocation();
 
-			// clear player's inventory
+			// clear hunter's inventory
 
 			event.getDrops().clear();
 			event.setDroppedExp(5);
@@ -163,35 +161,83 @@ public class Listeners implements Listener {
 
 			Drops.dropItems(player.getWorld(), playerLocation, playerEntityDisguise);
 
-			// make player's gamemode into spectator
+			// make hunter's gamemode into spectator
 			player.setFlySpeed(.1f);
 			player.setAllowFlight(false);
 			player.setGameMode(GameMode.SPECTATOR);
-			// have a special death message when player dies
 
+			// have a special death message when hunter dies
 			event.setDeathMessage(ChatColor.RED + "Player Mob Killed!");
 
+		// A player has died
 		} else if (player.hasPotionEffect(PotionEffectType.GLOWING)) {
-			Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + " lost!");
+			// Bodyswap time
+			if(plugin.getConfig().getBoolean("CrawlMode")) {
+				Player hunter;
+
+				// Find a suitable ghost to take the player's place
+				if(player.getKiller().getType() == EntityType.PLAYER) {
+					hunter = player.getKiller();
+				} else {
+					// ghost must be within 100 blocks to claim the kill or the player keeps life
+					double lowestDistance = 100;
+					Player closestPlayer = player;
+					// Loop through all players to find *the one*
+					for (Player h: player.getWorld().getPlayers()) {
+						if(Helpers.hasHunterTag(h) && h.getLocation().distance(player.getLocation()) < lowestDistance){
+							lowestDistance = h.getLocation().distance(player.getLocation());
+							closestPlayer = h;
+						}
+					}
+
+					// The player died of natural causes with no nearby ghost, so they come back to life
+					if(closestPlayer.equals(player)){
+						Bukkit.broadcastMessage("Nobody was near enough to claim the body," + player.getDisplayName() + "'s life is spared");
+					}
+
+					hunter = closestPlayer;
+				}
+
+				// Bodyswap variables
+				Location playerLocation = player.getLocation();
+				PlayerInventory playerInventory = player.getInventory();
+
+				// If nobody is swapping, our job is simple
+				if(hunter.equals(player)) {
+					player.teleport(playerLocation);
+					event.getDrops().clear();
+					player.getInventory().setContents(playerInventory.getContents());
+				// Otherwise it ain't so simple
+				} else {
+					hunter.damage(100);
+					event.getDrops().clear();
+					hunter.getInventory().setContents(playerInventory.getContents());
+					hunter.teleport(playerLocation);
+					Helpers.removeHunterTag(hunter);
+					Helpers.giveHunterTag(player, hunter);
+					hunter.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
+					hunter.setCanPickupItems(true);
+				}
+
+			}
+
+			Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + " died!");
 		}
 	}
 
 	@EventHandler
-	public void hunterRespawn(PlayerRespawnEvent event) {
-		Player hunter = event.getPlayer();
-		Location deathLocation = hunter.getLocation();
+	public void playerRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
+		Location deathLocation = player.getLocation();
 
-		//teleports player back to where they died
-		if (Helpers.hasHunterTag(hunter)) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				public void run() {
-					hunter.teleport(deathLocation);
-				}
-			}, 3L);
+		// Teleport player back to where they died
+		if (Helpers.hasHunterTag(player) || plugin.getConfig().getBoolean("CrawlMode")) {
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.teleport(deathLocation), 3L);
 		}
 
-		if (DisguiseAPI.isDisguised(hunter)) {
-			DisguiseAPI.undisguiseToAll(hunter);
+		// Undisguise if disguised
+		if (DisguiseAPI.isDisguised(player)) {
+			DisguiseAPI.undisguiseToAll(player);
 		}
 
 	}
