@@ -306,7 +306,7 @@ public class Items {
 
 	public static ItemStack healthModStar(int health) {
 		ItemStack item = new ItemStack(Material.NETHER_STAR);
-		item.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 0);
+		item.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("Curse of Health");
 		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("generic.MaxHealth", health - 20, AttributeModifier.Operation.ADD_NUMBER));
