@@ -260,6 +260,8 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.CROSSBOW));
 		hunter.getInventory().addItem(new ItemStack(Material.ARROW));
 
+		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0));
+
 		return new MobDisguise(DisguiseType.PILLAGER);
 	}
 	
