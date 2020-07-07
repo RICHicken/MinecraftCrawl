@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -309,6 +310,7 @@ public class Items {
 		item.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("Curse of Health");
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS);
 		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("generic.MaxHealth", health - 20, AttributeModifier.Operation.ADD_NUMBER));
 		item.setItemMeta(meta);
 
