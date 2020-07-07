@@ -2,8 +2,12 @@ package me.RICHicken.ManhuntWithMobs.utils;
 
 import java.util.Random;
 
+import com.comphenix.net.sf.cglib.asm.$Attribute;
+import com.google.common.collect.Multimap;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -286,4 +290,17 @@ public class Items {
 		return potion;
 	}
 
+	/////////////// Health Boots
+
+	public static ItemStack healthModBoots(int health) {
+		ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+		ItemMeta meta = boots.getItemMeta();
+		meta.setDisplayName("Boots of Health Modification");
+		meta.setUnbreakable(true);
+		meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier("generic.Armor", 0, AttributeModifier.Operation.MULTIPLY_SCALAR_1));
+		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("generic.MaxHealth", health - 20, AttributeModifier.Operation.ADD_NUMBER));
+		boots.setItemMeta(meta);
+
+		return boots;
+	}
 }
