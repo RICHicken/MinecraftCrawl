@@ -302,17 +302,16 @@ public class Items {
 		return potion;
 	}
 
-	/////////////// Health Boots
+	/////////////// Health Mod
 
-	public static ItemStack healthModBoots(int health) {
-		ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-		ItemMeta meta = boots.getItemMeta();
-		meta.setDisplayName("Boots of Health Modification");
-		meta.setUnbreakable(true);
-		meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier("generic.Armor", 0, AttributeModifier.Operation.MULTIPLY_SCALAR_1));
+	public static ItemStack healthModStar(int health) {
+		ItemStack item = new ItemStack(Material.NETHER_STAR);
+		item.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 0);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("Curse of Health");
 		meta.addAttributeModifier(Attribute.GENERIC_MAX_HEALTH, new AttributeModifier("generic.MaxHealth", health - 20, AttributeModifier.Operation.ADD_NUMBER));
-		boots.setItemMeta(meta);
+		item.setItemMeta(meta);
 
-		return boots;
+		return item;
 	}
 }

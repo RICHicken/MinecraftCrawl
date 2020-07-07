@@ -155,7 +155,7 @@ public class Utils {
 	private static MobDisguise caveSpider(Player hunter) {
 		spider(hunter);
 		hunter.getInventory().addItem(Items.caveSpiderPoison());
-		hunter.getInventory().setBoots(Items.healthModBoots(12));
+		hunter.getInventory().setChestplate(Items.healthModStar(12));
 		//hunter.damage(8);
 
 		return new MobDisguise(DisguiseType.CAVE_SPIDER);	
@@ -170,7 +170,7 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD));
 		hunter.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
 		hunter.getInventory().addItem(Items.endermanPickUpBlockItem());
-		hunter.getInventory().setBoots(Items.healthModBoots(40));
+		hunter.getInventory().setChestplate(Items.healthModStar(40));
 
 		//hunter.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 999999, 4));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20, 4));
@@ -184,7 +184,7 @@ public class Utils {
 		hunter.setFlySpeed(.025f);
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		hunter.getInventory().addItem(Items.ghastFireBallItem());
-		hunter.getInventory().setBoots(Items.healthModBoots(2));
+		hunter.getInventory().setChestplate(Items.healthModStar(2));
 		//hunter.damage(18);
 
 		return new MobDisguise(DisguiseType.GHAST);	
@@ -194,14 +194,14 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.WOODEN_SWORD));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 150));
-		hunter.getInventory().setBoots(Items.healthModBoots(16));
+		hunter.getInventory().setChestplate(Items.healthModStar(16));
 		//hunter.damage(4);
 
 		return new MobDisguise(DisguiseType.MAGMA_CUBE);	
 	}
 	
 	private static MobDisguise silverfish(Player hunter) {
-		hunter.getInventory().setBoots(Items.healthModBoots(8));
+		hunter.getInventory().setChestplate(Items.healthModStar(8));
 		//hunter.damage(12);
 		return new MobDisguise(DisguiseType.SILVERFISH);	
 	}
@@ -218,7 +218,7 @@ public class Utils {
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 0));
 		hunter.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
 		hunter.getInventory().addItem(Items.spiderClimb());
-		hunter.getInventory().setBoots(Items.healthModBoots(16));
+		hunter.getInventory().setChestplate(Items.healthModStar(16));
 		//hunter.damage(4);
 
 		return new MobDisguise(DisguiseType.SPIDER);	
@@ -237,7 +237,7 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.GOLDEN_SWORD));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0));
-		hunter.getInventory().setBoots(Items.healthModBoots(10));
+		hunter.getInventory().setChestplate(Items.healthModStar(10));
 		//hunter.damage(10);
 
 		return new MobDisguise(DisguiseType.PIG_ZOMBIE);
@@ -256,11 +256,10 @@ public class Utils {
 	}
 
 	private static MobDisguise pillager(Player hunter) {
-		hunter.getInventory().setBoots(Items.healthModBoots(24));
 		hunter.getInventory().addItem(new ItemStack(Material.CROSSBOW));
 		hunter.getInventory().addItem(new ItemStack(Material.ARROW));
 
-		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0));
+		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 1));
 
 		return new MobDisguise(DisguiseType.PILLAGER);
 	}
@@ -276,20 +275,12 @@ public class Utils {
 	
 	
 	public static void giveItemBackAfter(Player player, Main plugin, ItemStack item, long cooldownTime) {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			public void run() {
-				player.getInventory().addItem(item);
-			}
-		}, cooldownTime);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.getInventory().addItem(item), cooldownTime);
 	}
 	
 	public static void shootBlazeFireballVolley(Player hunter, Main plugin) {
 
-		Runnable activity = new Runnable() {
-			public void run() {
-				hunter.launchProjectile(SmallFireball.class);
-			}
-		};
+		Runnable activity = () -> hunter.launchProjectile(SmallFireball.class);
 		
 		hunter.launchProjectile(SmallFireball.class);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, activity, 6L);
@@ -327,7 +318,7 @@ public class Utils {
 	}
 
 	public static boolean endermanGiveBlock(Player enderman, Material block, Location blockLocation) {
-		
+
 		switch(block){
 			case BEDROCK:
 			case END_PORTAL_FRAME:
@@ -361,11 +352,7 @@ public class Utils {
 				player.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR)
 		{
 			player.setVelocity(new Vector(player.getVelocity().getX(), 0.3, player.getVelocity().getZ()));
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-				public void run() {
-					spiderClimb(player, plugin);
-				}
-			}, 5l);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> spiderClimb(player, plugin), 5l);
 		}
 
 		/*

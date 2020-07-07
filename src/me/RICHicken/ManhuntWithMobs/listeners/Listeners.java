@@ -80,7 +80,7 @@ public class Listeners implements Listener {
 
 			switch (DisguiseAPI.getDisguise(hunter).getType()){
 				case PILLAGER:
-					Utils.giveItemBackAfter(hunter, plugin, new ItemStack(Material.ARROW), 60);
+					Utils.giveItemBackAfter(hunter, plugin, new ItemStack(Material.ARROW), 100);
 					break;
 				case SKELETON:
 					Utils.putItemOnCooldown(hunter, plugin, new ItemStack(Material.ARROW), 40);
