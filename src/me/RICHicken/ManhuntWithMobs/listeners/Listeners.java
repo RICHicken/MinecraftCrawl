@@ -78,12 +78,17 @@ public class Listeners implements Listener {
 		if (DisguiseAPI.isDisguised(event.getEntity())) {
 			Player hunter = (Player) event.getEntity();
 
+			long cooldown = 40;
+			if(DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.PILLAGER){
+				cooldown = 60;
+			}
+
 			hunter.getInventory().remove(new ItemStack(Material.ARROW));
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
-					Utils.giveArrow(hunter);
+					hunter.getInventory().addItem(new ItemStack(Material.ARROW));
 				}
-			}, 40L);
+			}, cooldown);
 
 		}
 	}

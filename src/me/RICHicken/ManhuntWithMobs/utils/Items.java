@@ -35,9 +35,9 @@ public class Items {
 
 	public static ItemStack zombieAxe() {
 		ItemStack sword = new ItemStack(Material.WOODEN_AXE);
-		sword.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 		ItemMeta meta = sword.getItemMeta();
 		meta.setDisplayName("Zombie Axe");
+		meta.setUnbreakable(true);
 		sword.setItemMeta(meta);
 
 		return sword;
@@ -46,6 +46,18 @@ public class Items {
 
 	public static ItemStack droppedSkeleBow() {
 		ItemStack bow = new ItemStack(Material.BOW);
+		ItemMeta meta = bow.getItemMeta();
+		Random r = new Random();
+
+		((Damageable) meta).setDamage(r.nextInt(381));
+
+		bow.setItemMeta(meta);
+
+		return bow;
+	}
+
+	public static ItemStack droppedPillagerCrossbow() {
+		ItemStack bow = new ItemStack(Material.CROSSBOW);
 		ItemMeta meta = bow.getItemMeta();
 		Random r = new Random();
 

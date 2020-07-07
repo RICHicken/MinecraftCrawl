@@ -51,6 +51,10 @@ public class Drops {
 				break;
 			case WITCH:
 				witch(world, loc);
+				break;
+			case PILLAGER:
+				pillager(world, loc);
+				break;
 			default:
 				break;
 		}
@@ -205,5 +209,19 @@ public class Drops {
 		}
 
 		Utils.dropWitchItems(first, second, third, w, l);
+	}
+
+	private static void pillager(World w, Location l) {
+		Random r = new Random();
+		int current = r.nextInt(3);
+
+		if(current != 0) {
+			w.dropItemNaturally(l, new ItemStack(Material.ARROW, current));
+		}
+
+		if (Math.random() <= .085) {
+			ItemStack crossbow = Items.droppedPillagerCrossbow();
+			w.dropItemNaturally(l, crossbow);
+		}
 	}
 }

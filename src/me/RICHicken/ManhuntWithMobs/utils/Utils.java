@@ -93,6 +93,9 @@ public class Utils {
 			case WITCH:
 				m = witch(hunter);
 				break;
+			case PILLAGER:
+				m = pillager(hunter);
+				break;
 			default:
 
 				hunter.setGameMode(GameMode.SPECTATOR);
@@ -205,7 +208,7 @@ public class Utils {
 	
 	private static MobDisguise skeleton(Player hunter) {
 		hunter.getInventory().addItem(Items.bow());
-		giveArrow(hunter);
+		hunter.getInventory().addItem(new ItemStack(Material.ARROW));
 
 		return new MobDisguise(DisguiseType.SKELETON);	
 	}
@@ -251,11 +254,16 @@ public class Utils {
 
 		return new MobDisguise(DisguiseType.WITCH);
 	}
+
+	private static MobDisguise pillager(Player hunter) {
+		hunter.getInventory().setBoots(Items.healthModBoots(24));
+		hunter.getInventory().addItem(new ItemStack(Material.CROSSBOW));
+		hunter.getInventory().addItem(new ItemStack(Material.ARROW));
+
+		return new MobDisguise(DisguiseType.PILLAGER);
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////
-	public static void giveArrow(Player hunter) {
-		hunter.getInventory().addItem(new ItemStack(Material.ARROW));
-	}
 	
 	public static void putItemOnCooldown(Player player, Main plugin, ItemStack item, long cooldownTime) {
 		player.getInventory().removeItem(item);
