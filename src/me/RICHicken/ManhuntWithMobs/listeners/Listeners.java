@@ -179,6 +179,7 @@ public class Listeners implements Listener {
 				if(player.getKiller().getType() == EntityType.PLAYER) {
 					hunter = player.getKiller();
 				} else {
+					Bukkit.broadcastMessage("no killer, finding nearest");
 					// ghost must be within 100 blocks to claim the kill or the player keeps life
 					double lowestDistance = 100;
 					Player closestPlayer = player;
@@ -189,6 +190,7 @@ public class Listeners implements Listener {
 							closestPlayer = h;
 						}
 					}
+					Bukkit.broadcastMessage("Closest ghost is " + closestPlayer.getDisplayName() + ", who was " + lowestDistance + "m away");
 
 					// The player died of natural causes with no nearby ghost, so they come back to life
 					if(closestPlayer.equals(player)){
