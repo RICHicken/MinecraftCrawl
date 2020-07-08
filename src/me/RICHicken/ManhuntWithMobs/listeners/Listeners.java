@@ -207,20 +207,28 @@ public class Listeners implements Listener {
 					player.teleport(playerLocation);
 					event.getDrops().clear();
 					player.getInventory().setContents(playerInventory.getContents());
+					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died, but nobody was around to claim the kill!");
 				// Otherwise it ain't so simple
 				} else {
-					hunter.damage(100);
-					event.getDrops().clear();
-					hunter.getInventory().setContents(playerInventory.getContents());
+					// Hunter to Player
 					hunter.teleport(playerLocation);
+					hunter.setHealth(20);
+					// Undisguise if disguised
+					if (DisguiseAPI.isDisguised(player)) {
+						DisguiseAPI.undisguiseToAll(player);
+					}
+					hunter.getInventory().setContents(playerInventory.getContents());
 					Helpers.removeHunterTag(hunter);
-					Helpers.giveHunterTag(player, hunter);
 					hunter.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
+					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died and swapped with " + (ChatColor.GREEN + hunter.getDisplayName()) + "!");
+
+					// Player to Hunter
+					event.getDrops().clear();
+					Helpers.giveHunterTag(player, hunter);
 				}
-
+			} else {
+				Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + " died!");
 			}
-
-			Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + " died!");
 		}
 	}
 
