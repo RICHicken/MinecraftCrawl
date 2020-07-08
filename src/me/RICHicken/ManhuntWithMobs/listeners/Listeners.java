@@ -36,6 +36,7 @@ import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import net.md_5.bungee.api.ChatColor;
 
 import java.security.DigestException;
+import java.util.Iterator;
 
 public class Listeners implements Listener {
 
@@ -183,22 +184,18 @@ public class Listeners implements Listener {
 				if(hunter == player) {
 
 					Bukkit.broadcastMessage("no killer, finding nearest 1");
-					// ghost must be within 100 blocks to claim the kill or the player keeps life
-					double lowestDistance = 100;
+					Iterator<Player> playerIterator = player.getWorld().getPlayers().iterator();
 					Player closestPlayer = player;
-					// Loop through all players to find *the one*
-					for (Player h: player.getWorld().getPlayers()) {
-						if(Helpers.hasHunterTag(h) && h.getLocation().distance(player.getLocation()) < lowestDistance){
-							lowestDistance = h.getLocation().distance(player.getLocation());
-							closestPlayer = h;
+					double lowestDistance = -1;
+
+					while(playerIterator.hasNext()){
+						Player p = playerIterator.next();
+						if(Helpers.hasHunterTag(p)) {
+							closestPlayer = p;
+							lowestDistance = p.getLocation().distance(player.getLocation());
 						}
 					}
 					Bukkit.broadcastMessage("Closest ghost is " + closestPlayer.getDisplayName() + ", who was " + lowestDistance + "m away");
-
-					// The player died of natural causes with no nearby ghost, so they come back to life
-					if(closestPlayer.equals(player)){
-						Bukkit.broadcastMessage("Nobody was near enough to claim the body," + player.getDisplayName() + "'s life is spared");
-					}
 
 					hunter = closestPlayer;
 				}
