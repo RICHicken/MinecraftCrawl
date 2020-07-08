@@ -171,16 +171,15 @@ public class Listeners implements Listener {
 
 		// A player has died
 		} else if (player.hasPotionEffect(PotionEffectType.GLOWING)) {
-
-			Bukkit.broadcastMessage(event.getEntity().getKiller().toString());
 			// Bodyswap time
 			if(plugin.getConfig().getString("CrawlMode") == "true") {
-				Player hunter = event.getEntity();
+				Player hunter = player;
 
 				// Find a suitable ghost to take the player's place
 				if(player.getKiller().getType() == EntityType.PLAYER) {
 					hunter = player.getKiller();
-				} else {
+				}
+				if(hunter == player) {
 					Bukkit.broadcastMessage("no killer, finding nearest");
 					// ghost must be within 100 blocks to claim the kill or the player keeps life
 					double lowestDistance = 100;
