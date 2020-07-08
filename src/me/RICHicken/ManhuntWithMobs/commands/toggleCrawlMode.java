@@ -30,6 +30,14 @@ public class toggleCrawlMode implements CommandExecutor {
                 plugin.getConfig().set("CrawlMode", "true");
             }
             plugin.saveDefaultConfig();
+        }else{
+            if(plugin.getConfig().getString("CrawlMode") == "true"){
+                System.out.println("Crawl Mode is now off!");
+                plugin.getConfig().set("CrawlMode", "false");
+            }else if(plugin.getConfig().getString("CrawlMode") == "false") {
+                System.out.println("Crawl Mode is now on!");
+                plugin.getConfig().set("CrawlMode", "true");
+            }
         }
         return true;
     }
