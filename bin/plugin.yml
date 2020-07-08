@@ -13,3 +13,5 @@ commands:
    description: Stops the MobsvsSpeedrunner Gamemode.
   disguisecheck:
    description: Checks if player is diguised. (Used for debugging).
+  togglecrawlmode:
+   description: Toggle "Crawl Mode". When the speedrunner dies, the hunter who killed the speedrunner will become the speedrunner.

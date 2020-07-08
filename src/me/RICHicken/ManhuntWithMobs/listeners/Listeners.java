@@ -172,7 +172,7 @@ public class Listeners implements Listener {
 		// A player has died
 		} else if (player.hasPotionEffect(PotionEffectType.GLOWING)) {
 			// Bodyswap time
-			if(plugin.getConfig().getBoolean("CrawlMode")) {
+			if(plugin.getConfig().getString("CrawlMode") == "true") {
 				Player hunter;
 
 				// Find a suitable ghost to take the player's place
