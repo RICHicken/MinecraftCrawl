@@ -56,7 +56,8 @@ public class Listeners implements Listener {
 			}
 
 		} else if (DisguiseAPI.isDisguised(hunter)) {
-			if (DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.WITHER_SKELETON && hunter.getInventory().getItemInMainHand().getType() == Material.WITHER_SKELETON_SKULL) {
+			if (DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.WITHER_SKELETON
+					&& hunter.getInventory().getItemInMainHand().getType() == Material.WITHER_SKELETON_SKULL) {
 				if (event.getRightClicked() instanceof LivingEntity) {
 					((LivingEntity) event.getRightClicked())
 							.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 0));
@@ -64,7 +65,8 @@ public class Listeners implements Listener {
 				} else {
 					hunter.sendMessage("You can't wither this!");
 				}
-			} else if (DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.CAVE_SPIDER && hunter.getInventory().getItemInMainHand().getType() == Material.SPIDER_EYE) {
+			} else if (DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.CAVE_SPIDER
+					&& hunter.getInventory().getItemInMainHand().getType() == Material.SPIDER_EYE) {
 				if (event.getRightClicked() instanceof LivingEntity) {
 					Utils.caveSpiderPoison((LivingEntity) event.getRightClicked());
 					Utils.putItemOnCooldown(hunter, plugin, Items.caveSpiderPoison(), 300);
@@ -80,57 +82,54 @@ public class Listeners implements Listener {
 		if (DisguiseAPI.isDisguised(event.getEntity())) {
 			Player hunter = (Player) event.getEntity();
 
-			switch (DisguiseAPI.getDisguise(hunter).getType()){
-				case PILLAGER:
-					Utils.giveItemBackAfter(hunter, plugin, new ItemStack(Material.ARROW), 100);
-					break;
-				case SKELETON:
-					Utils.putItemOnCooldown(hunter, plugin, new ItemStack(Material.ARROW), 40);
-				default:
-					break;
+			switch (DisguiseAPI.getDisguise(hunter).getType()) {
+			case PILLAGER:
+				Utils.giveItemBackAfter(hunter, plugin, new ItemStack(Material.ARROW), 100);
+				break;
+			case SKELETON:
+				Utils.putItemOnCooldown(hunter, plugin, new ItemStack(Material.ARROW), 40);
+			default:
+				break;
 			}
 
+			/*
+			 * long cooldown = 40; if(DisguiseAPI.getDisguise(hunter).getType() ==
+			 * DisguiseType.PILLAGER){ cooldown = 60; }
+			 * 
+			 * hunter.getInventory().remove(new ItemStack(Material.ARROW));
+			 * Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { public
+			 * void run() { hunter.getInventory().addItem(new ItemStack(Material.ARROW)); }
+			 * }, cooldown);
+			 */
 
-			/* long cooldown = 40;
-			if(DisguiseAPI.getDisguise(hunter).getType() == DisguiseType.PILLAGER){
-				cooldown = 60;
-			}
+		}
+	}
 
-			hunter.getInventory().remove(new ItemStack(Material.ARROW));
+	@EventHandler
+	public void onConsume(PlayerItemConsumeEvent event) {
+		Player player = event.getPlayer();
+
+		// if the player has the glowing effect, give it back after they drink milk.
+		if (player.hasPotionEffect(PotionEffectType.GLOWING)
+				&& player.getInventory().getItemInMainHand().getType().equals(Material.MILK_BUCKET)) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
-					hunter.getInventory().addItem(new ItemStack(Material.ARROW));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
 				}
-			}, cooldown);*/
-
+			}, 3L);
 		}
+
+		// use this to give doppleganger weakness if they drink milk.
 	}
 
 	@EventHandler
-	public void onConsume(PlayerItemConsumeEvent event){
+	public void onDrop(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
-
-		//if the player has the glowing effect, give it back after they drink milk.
-		if(player.hasPotionEffect(PotionEffectType.GLOWING) && player.getInventory().getItemInMainHand().getType().equals(Material.MILK_BUCKET)){
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
-					}
-				}, 3L);
-		}
-
-		//use this to give doppleganger weakness if they drink milk.
-	}
-
-	@EventHandler
-	public void onDrop(PlayerDropItemEvent event){
-		Player player = event.getPlayer();
-		//prevents mob from dropping items
-		if(DisguiseAPI.isDisguised(player)){
+		// prevents mob from dropping items
+		if (DisguiseAPI.isDisguised(player)) {
 			player.sendMessage(ChatColor.DARK_PURPLE + "You can't drop items as a mob!");
 			event.setCancelled(true);
 		}
-
 
 	}
 
@@ -148,16 +147,16 @@ public class Listeners implements Listener {
 			event.setDroppedExp(5);
 			// drop mob loot from loot table
 			EntityType playerEntityDisguise = DisguiseAPI.getDisguise(player).getType().getEntityType();
-			switch (playerEntityDisguise){
-				case ENDERMAN:
+			switch (playerEntityDisguise) {
+			case ENDERMAN:
 //					for(ItemStack i : player.getInventory().getContents()){
 //						if(i.getType() != Material.AIR && i.getType().isBlock() && (i.getType() != Material.BARRIER)){
 //							player.getWorld().dropItemNaturally(playerLocation, i);
 //						}
 //					}
-					break;
-				default:
-					break;
+				break;
+			default:
+				break;
 			}
 
 			Drops.dropItems(player.getWorld(), playerLocation, playerEntityDisguise);
@@ -170,33 +169,33 @@ public class Listeners implements Listener {
 			// have a special death message when hunter dies
 			event.setDeathMessage(ChatColor.RED + "Player Mob Killed!");
 
-		// A player has died
+			// A player has died
 		} else if (player.hasPotionEffect(PotionEffectType.GLOWING)) {
 			// Bodyswap time
-			if(plugin.getConfig().getString("CrawlMode") == "true") {
+			if (plugin.getConfig().getString("CrawlMode") == "true") {
 				Player hunter = player;
-				Bukkit.broadcastMessage("hey i know you died haha");
-
 				// Find a suitable ghost to take the player's place
-				if(player.getKiller() != null) {
+				if (player.getKiller() != null) {
 					hunter = player.getKiller();
 				}
-				if(hunter == player) {
+				if (hunter == player) {
 
-					Bukkit.broadcastMessage("no killer, finding nearest 1");
 					Iterator<Player> playerIterator = player.getWorld().getPlayers().iterator();
 					Player closestPlayer = player;
 					double lowestDistance = -1;
 
-					while(playerIterator.hasNext()){
+					while (playerIterator.hasNext()) {
 						Player p = playerIterator.next();
-						if(Helpers.hasHunterTag(p)) {
+						if (Helpers.hasHunterTag(p)) {
 							closestPlayer = p;
 							lowestDistance = p.getLocation().distance(player.getLocation());
 						}
 					}
-					Bukkit.broadcastMessage("Closest ghost is " + closestPlayer.getDisplayName() + ", who was " + lowestDistance + "m away");
 
+					if (lowestDistance != -1) {
+						Bukkit.broadcastMessage("Closest ghost is " + closestPlayer.getDisplayName() + ", who was "
+								+ (int)lowestDistance + "m away");
+					}
 					hunter = closestPlayer;
 				}
 
@@ -205,14 +204,17 @@ public class Listeners implements Listener {
 				PlayerInventory playerInventory = player.getInventory();
 
 				// If nobody is swapping, our job is simple
-				if(hunter.equals(player)) {
+				if (hunter.equals(player)) {
 
-
-					player.teleport(playerLocation);
+					// player.teleport(playerLocation);
 					event.getDrops().clear();
-					player.getInventory().setContents(playerInventory.getContents());
-					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died, but nobody was around to claim the kill!");
-				// Otherwise it ain't so simple
+					player.setHealth(20);
+					player.setFoodLevel(20);
+					event.setKeepInventory(true);
+					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName())
+							+ " has died, but nobody was around to claim the kill!");
+
+					// Otherwise it ain't so simple
 				} else {
 					// Hunter to Player
 					hunter.teleport(playerLocation);
@@ -223,11 +225,14 @@ public class Listeners implements Listener {
 					}
 					hunter.getInventory().setContents(playerInventory.getContents());
 					Helpers.removeHunterTag(hunter);
-					for (PotionEffect i: hunter.getActivePotionEffects()) {
+					for (PotionEffect i : hunter.getActivePotionEffects()) {
 						hunter.removePotionEffect(i.getType());
 					}
 					hunter.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
-					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died and swapped with " + (ChatColor.GREEN + hunter.getDisplayName()) + "!");
+					hunter.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 200));
+					hunter.setGameMode(GameMode.SURVIVAL);
+					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died and swapped with "
+							+ (ChatColor.GREEN + hunter.getDisplayName()) + "!");
 
 					// Player to Hunter
 					event.getDrops().clear();
@@ -271,8 +276,10 @@ public class Listeners implements Listener {
 				Player hunter = event.getPlayer();
 				if (hunter.getInventory().getItemInMainHand().getType() == Material.BARRIER) {
 					hunter.damage(100000);
-				} else if (DisguiseAPI.isDisguised(event.getPlayer()) && action == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType().isInteractable()) {
-					//stop mobs from interacting with objects (chests, furnaces, levers, doors, etc.)
+				} else if (DisguiseAPI.isDisguised(event.getPlayer()) && action == Action.RIGHT_CLICK_BLOCK
+						&& event.getClickedBlock().getType().isInteractable()) {
+					// stop mobs from interacting with objects (chests, furnaces, levers, doors,
+					// etc.)
 
 					event.getPlayer().sendMessage(ChatColor.DARK_PURPLE + "Mobs can't interact with objects!");
 					event.setCancelled(true);
@@ -280,164 +287,163 @@ public class Listeners implements Listener {
 				} else {
 
 					switch (DisguiseAPI.getDisguise(hunter).getType().getEntityType()) {
-						case BLAZE:
-							switch (hunter.getInventory().getItemInMainHand().getType()) {
-								case BLAZE_ROD:
+					case BLAZE:
+						switch (hunter.getInventory().getItemInMainHand().getType()) {
+						case BLAZE_ROD:
 
-									Utils.shootBlazeFireballVolley(hunter, plugin);
-									Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
+							Utils.shootBlazeFireballVolley(hunter, plugin);
+							Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
 
-									break;
-								case FEATHER:
-									hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 55, 2));
-									Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
-
-									break;
-								default:
-									break;
-							}
 							break;
+						case FEATHER:
+							hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 55, 2));
+							Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
 
-						case CREEPER:
-							if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
-								Utils.creeperExplode(hunter);
-							}
 							break;
-
-						case ENDERMAN:
-							if (hunter.getInventory().getItemInMainHand().getType() == Material.WOODEN_PICKAXE) {
-								if (action == Action.RIGHT_CLICK_BLOCK) {
-									Block block = event.getClickedBlock();
-									Location loc = block.getLocation();
-									if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
-										hunter.getInventory().removeItem(Items.endermanPickUpBlockItem());
-									} else {
-										hunter.sendMessage(ChatColor.LIGHT_PURPLE + "You can not pick up this block!");
-									}
-								}
-
-							} else if (hunter.getInventory().getItemInMainHand().getType().isBlock() && hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
-								ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
-								hunter.getLocation().getBlock().setType(selectedBlock.getType());
-								hunter.getInventory().removeItem(selectedBlock);
-
-								Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 40);
-							} else if (hunter.getInventory().getItemInMainHand().getType() == Material.POPPED_CHORUS_FRUIT) {
-								Utils.endermanTeleport(hunter);
-								hunter.getInventory().removeItem(Items.endermanTeleportItem());
-
-							}
-							break;
-
-						case GHAST:
-							if (hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
-
-								hunter.launchProjectile(Fireball.class);
-								Utils.putItemOnCooldown(hunter, plugin, Items.ghastFireBallItem(), 45);
-
-							}
-							break;
-
-						case PHANTOM:
-							if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE) {
-								hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 12));
-								Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
-							}
-							break;
-
-						case SPIDER:
-						case CAVE_SPIDER:
-
-							if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER &&
-									(hunter.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR ||
-											hunter.getLocation().getBlock().getRelative(BlockFace.SOUTH).getType() != Material.AIR ||
-											hunter.getLocation().getBlock().getRelative(BlockFace.EAST).getType() != Material.AIR ||
-											hunter.getLocation().getBlock().getRelative(BlockFace.WEST).getType() != Material.AIR)) {
-
-								Utils.spiderClimb(hunter, plugin);
-							}
-							break;
-						case WITCH:
-							if(hunter.getInventory().getItemInMainHand().getType() == Material.SPLASH_POTION) {
-								long cooldown = 40;
-
-								if(hunter.getInventory().getItemInMainHand() == Items.witchPotionHarming()){
-									cooldown = 80;
-								}
-
-
-
-								Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-									public void run() {
-										hunter.getInventory().remove(Material.SPLASH_POTION);
-									}
-								}, 1);
-
-								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionHarming(), cooldown);
-								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionHealing(), cooldown);
-								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionPoison(), cooldown);
-								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionSlowness(), cooldown);
-								Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionWeakness(), cooldown);
-							}
 						default:
 							break;
-					}
-				}
-/*
-			 if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
-				Utils.creeperExplode(hunter);
-
-			} else if (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.ENDERMAN)) {
-				if (hunter.getInventory().getItemInMainHand().getType() == Material.WOODEN_PICKAXE) {
-					if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-						Block block = event.getClickedBlock();
-						Location loc = block.getLocation();
-						if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
-							hunter.getInventory().removeItem(Items.endermanPickUpBlockItem());
-						} else {
-							hunter.sendMessage(ChatColor.LIGHT_PURPLE + "You can not pick up this block!");
 						}
+						break;
+
+					case CREEPER:
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.GUNPOWDER) {
+							Utils.creeperExplode(hunter);
+						}
+						break;
+
+					case ENDERMAN:
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.WOODEN_PICKAXE) {
+							if (action == Action.RIGHT_CLICK_BLOCK) {
+								Block block = event.getClickedBlock();
+								Location loc = block.getLocation();
+								if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
+									hunter.getInventory().removeItem(Items.endermanPickUpBlockItem());
+								} else {
+									hunter.sendMessage(ChatColor.LIGHT_PURPLE + "You can not pick up this block!");
+								}
+							}
+
+						} else if (hunter.getInventory().getItemInMainHand().getType().isBlock()
+								&& hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
+							ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
+							hunter.getLocation().getBlock().setType(selectedBlock.getType());
+							hunter.getInventory().removeItem(selectedBlock);
+
+							Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 40);
+						} else if (hunter.getInventory().getItemInMainHand()
+								.getType() == Material.POPPED_CHORUS_FRUIT) {
+							Utils.endermanTeleport(hunter);
+							hunter.getInventory().removeItem(Items.endermanTeleportItem());
+
+						}
+						break;
+
+					case GHAST:
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
+
+							hunter.launchProjectile(Fireball.class);
+							Utils.putItemOnCooldown(hunter, plugin, Items.ghastFireBallItem(), 45);
+
+						}
+						break;
+
+					case PHANTOM:
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE) {
+							hunter.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 50, 12));
+							Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
+						}
+						break;
+
+					case SPIDER:
+					case CAVE_SPIDER:
+
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.LADDER && (hunter
+								.getLocation().getBlock().getRelative(BlockFace.NORTH).getType() != Material.AIR
+								|| hunter.getLocation().getBlock().getRelative(BlockFace.SOUTH)
+										.getType() != Material.AIR
+								|| hunter.getLocation().getBlock().getRelative(BlockFace.EAST).getType() != Material.AIR
+								|| hunter.getLocation().getBlock().getRelative(BlockFace.WEST)
+										.getType() != Material.AIR)) {
+
+							Utils.spiderClimb(hunter, plugin);
+						}
+						break;
+					case WITCH:
+						if (hunter.getInventory().getItemInMainHand().getType() == Material.SPLASH_POTION) {
+							long cooldown = 40;
+
+							if (hunter.getInventory().getItemInMainHand() == Items.witchPotionHarming()) {
+								cooldown = 80;
+							}
+
+							Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+								public void run() {
+									hunter.getInventory().remove(Material.SPLASH_POTION);
+								}
+							}, 1);
+
+							Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionHarming(), cooldown);
+							Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionHealing(), cooldown);
+							Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionPoison(), cooldown);
+							Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionSlowness(), cooldown);
+							Utils.giveItemBackAfter(hunter, plugin, Items.witchPotionWeakness(), cooldown);
+						}
+					default:
+						break;
 					}
-
-				} else if (hunter.getInventory().getItemInMainHand().getType().isBlock() && hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
-					ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
-					hunter.getLocation().getBlock().setType(selectedBlock.getType());
-					hunter.getInventory().removeItem(selectedBlock);
-
-					Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 80);
-				} else if (hunter.getInventory().getItemInMainHand().getType() == Material.POPPED_CHORUS_FRUIT) {
-					Utils.endermanTeleport(hunter);
-					hunter.getInventory().removeItem(Items.endermanTeleportItem());
-
 				}
-			} else if (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.BLAZE)) {
-
-				switch (hunter.getInventory().getItemInMainHand().getType()) {
-					case BLAZE_ROD:
-
-						Utils.shootBlazeFireballVolley(hunter, plugin);
-						Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
-
-						break;
-					case FEATHER:
-						hunter.setVelocity(new Vector(0, 1.5, 0));
-						Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
-
-						break;
-				}
-
-			} else if (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.GHAST)
-					&& hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
-
-				hunter.launchProjectile(Fireball.class);
-				Utils.putItemOnCooldown(hunter, plugin, Items.ghastFireBallItem(), 45);
-
-			} else if (hunter.getInventory().getItemInMainHand().getType() == Material.PHANTOM_MEMBRANE
-					&& DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.PHANTOM)) {
-				hunter.setVelocity(new Vector(0, 2.5, 0));
-				Utils.putItemOnCooldown(hunter, plugin, Items.phantomJumpItem(), 160);
-			}
-			*/
+				/*
+				 * if (hunter.getInventory().getItemInMainHand().getType() ==
+				 * Material.GUNPOWDER) { Utils.creeperExplode(hunter);
+				 * 
+				 * } else if
+				 * (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.ENDERMAN)) {
+				 * if (hunter.getInventory().getItemInMainHand().getType() ==
+				 * Material.WOODEN_PICKAXE) { if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
+				 * { Block block = event.getClickedBlock(); Location loc = block.getLocation();
+				 * if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
+				 * hunter.getInventory().removeItem(Items.endermanPickUpBlockItem()); } else {
+				 * hunter.sendMessage(ChatColor.LIGHT_PURPLE +
+				 * "You can not pick up this block!"); } }
+				 * 
+				 * } else if (hunter.getInventory().getItemInMainHand().getType().isBlock() &&
+				 * hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
+				 * ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
+				 * hunter.getLocation().getBlock().setType(selectedBlock.getType());
+				 * hunter.getInventory().removeItem(selectedBlock);
+				 * 
+				 * Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 80);
+				 * } else if (hunter.getInventory().getItemInMainHand().getType() ==
+				 * Material.POPPED_CHORUS_FRUIT) { Utils.endermanTeleport(hunter);
+				 * hunter.getInventory().removeItem(Items.endermanTeleportItem());
+				 * 
+				 * } } else if
+				 * (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.BLAZE)) {
+				 * 
+				 * switch (hunter.getInventory().getItemInMainHand().getType()) { case
+				 * BLAZE_ROD:
+				 * 
+				 * Utils.shootBlazeFireballVolley(hunter, plugin);
+				 * Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
+				 * 
+				 * break; case FEATHER: hunter.setVelocity(new Vector(0, 1.5, 0));
+				 * Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
+				 * 
+				 * break; }
+				 * 
+				 * } else if
+				 * (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.GHAST) &&
+				 * hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
+				 * 
+				 * hunter.launchProjectile(Fireball.class); Utils.putItemOnCooldown(hunter,
+				 * plugin, Items.ghastFireBallItem(), 45);
+				 * 
+				 * } else if (hunter.getInventory().getItemInMainHand().getType() ==
+				 * Material.PHANTOM_MEMBRANE &&
+				 * DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.PHANTOM)) {
+				 * hunter.setVelocity(new Vector(0, 2.5, 0)); Utils.putItemOnCooldown(hunter,
+				 * plugin, Items.phantomJumpItem(), 160); }
+				 */
 			}
 		}
 	}
@@ -445,15 +451,16 @@ public class Listeners implements Listener {
 	public void useBed(PlayerBedEnterEvent event) {
 		boolean setDay = true;
 		Player player = event.getPlayer();
-		if(event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK && player.hasPotionEffect(PotionEffectType.GLOWING)) {
-			for (Player i: player.getWorld().getPlayers()) {
-				if(i.hasPotionEffect(PotionEffectType.GLOWING) && !i.isSleeping()) {
+		if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK
+				&& player.hasPotionEffect(PotionEffectType.GLOWING)) {
+			for (Player i : player.getWorld().getPlayers()) {
+				if (i.hasPotionEffect(PotionEffectType.GLOWING) && !i.isSleeping()) {
 					setDay = false;
 				}
 			}
 		}
 
-		if(setDay) {
+		if (setDay) {
 			player.getWorld().setTime(0);
 		}
 	}
