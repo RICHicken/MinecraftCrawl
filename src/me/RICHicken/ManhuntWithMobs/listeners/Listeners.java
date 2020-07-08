@@ -214,11 +214,14 @@ public class Listeners implements Listener {
 					hunter.teleport(playerLocation);
 					hunter.setHealth(20);
 					// Undisguise if disguised
-					if (DisguiseAPI.isDisguised(player)) {
-						DisguiseAPI.undisguiseToAll(player);
+					if (DisguiseAPI.isDisguised(hunter)) {
+						DisguiseAPI.undisguiseToAll(hunter);
 					}
 					hunter.getInventory().setContents(playerInventory.getContents());
 					Helpers.removeHunterTag(hunter);
+					for (PotionEffect i: hunter.getActivePotionEffects()) {
+						hunter.removePotionEffect(i.getType());
+					}
 					hunter.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
 					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died and swapped with " + (ChatColor.GREEN + hunter.getDisplayName()) + "!");
 
