@@ -2,6 +2,7 @@ package me.RICHicken.ManhuntWithMobs.utils;
 
 import java.util.Random;
 
+import me.libraryaddict.disguise.DisguiseAPI;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Creeper;
@@ -76,6 +77,7 @@ public class Utils {
 				break;
 			case ZOMBIE:
 			case ZOMBIE_VILLAGER:
+			case HUSK:
 				m = zombie(hunter);
 				break;
 			case DROWNED:
@@ -313,7 +315,11 @@ public class Utils {
 	public static void creeperExplode(Player hunter) {
 		Creeper creeper = (Creeper) hunter.getWorld().spawnEntity(hunter.getLocation(), EntityType.CREEPER);
 		creeper.ignite();
-		hunter.damage(100);
+
+
+		DisguiseAPI.undisguiseToAll(hunter);
+		hunter.getInventory().clear();
+		hunter.setGameMode(GameMode.SPECTATOR);
 	}
 
 	public static boolean endermanGiveBlock(Player enderman, Material block, Location blockLocation) {
