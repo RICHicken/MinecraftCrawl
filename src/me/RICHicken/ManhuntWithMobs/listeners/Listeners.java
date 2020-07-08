@@ -174,13 +174,15 @@ public class Listeners implements Listener {
 			// Bodyswap time
 			if(plugin.getConfig().getString("CrawlMode") == "true") {
 				Player hunter = player;
+				Bukkit.broadcastMessage("hey i know you died haha");
 
 				// Find a suitable ghost to take the player's place
-				if(player.getKiller().getType() == EntityType.PLAYER) {
+				if(player.getKiller() != null) {
 					hunter = player.getKiller();
 				}
 				if(hunter == player) {
-					Bukkit.broadcastMessage("no killer, finding nearest");
+
+					Bukkit.broadcastMessage("no killer, finding nearest 1");
 					// ghost must be within 100 blocks to claim the kill or the player keeps life
 					double lowestDistance = 100;
 					Player closestPlayer = player;
