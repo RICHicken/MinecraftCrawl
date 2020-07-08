@@ -209,6 +209,8 @@ public class Listeners implements Listener {
 
 				// If nobody is swapping, our job is simple
 				if(hunter.equals(player)) {
+
+
 					player.teleport(playerLocation);
 					event.getDrops().clear();
 					player.getInventory().setContents(playerInventory.getContents());
@@ -440,6 +442,22 @@ public class Listeners implements Listener {
 			}
 			*/
 			}
+		}
+	}
+
+	public void useBed(PlayerBedEnterEvent event) {
+		boolean setDay = true;
+		Player player = event.getPlayer();
+		if(event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK && player.hasPotionEffect(PotionEffectType.GLOWING)) {
+			for (Player i: player.getWorld().getPlayers()) {
+				if(i.hasPotionEffect(PotionEffectType.GLOWING) && !i.isSleeping()) {
+					setDay = false;
+				}
+			}
+		}
+
+		if(setDay) {
+			player.getWorld().setTime(0);
 		}
 	}
 }
