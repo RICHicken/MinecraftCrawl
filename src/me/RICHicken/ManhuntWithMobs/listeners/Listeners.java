@@ -217,13 +217,15 @@ public class Listeners implements Listener {
 					// Otherwise it ain't so simple
 				} else {
 					// Hunter to Player
+
+                    hunter.getInventory().setContents(playerInventory.getContents());
 					hunter.teleport(playerLocation);
 					hunter.setHealth(20);
+					hunter.setFoodLevel(20);
 					// Undisguise if disguised
 					if (DisguiseAPI.isDisguised(hunter)) {
 						DisguiseAPI.undisguiseToAll(hunter);
 					}
-					hunter.getInventory().setContents(playerInventory.getContents());
 					Helpers.removeHunterTag(hunter);
 					for (PotionEffect i : hunter.getActivePotionEffects()) {
 						hunter.removePotionEffect(i.getType());
