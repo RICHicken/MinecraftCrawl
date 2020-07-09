@@ -172,7 +172,7 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
 		hunter.getInventory().addItem(Items.endermanPickUpBlockItem());
 
-		if(!hunter.getWorld().equals(World.Environment.THE_END)) {
+		if(!hunter.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
 			hunter.getInventory().setChestplate(Items.healthModStar(40));
 		}
 

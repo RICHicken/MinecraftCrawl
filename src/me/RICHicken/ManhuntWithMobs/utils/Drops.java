@@ -66,12 +66,12 @@ public class Drops {
 
 	}
 
-	public void dropEndermanEndItems(World w, Location l){
+	public static void dropEndermanEndItems(World w, Location l){
 		Material[] drops = new Material[]{Material.OAK_LOG, Material.BREAD, Material.ARROW};
 
 		w.dropItemNaturally(l, new ItemStack(drops[new Random().nextInt(3)], 3));
 
-		if(Math.random() <= .1){
+		if(Math.random() <= .2){
 			w.dropItemNaturally(l, new ItemStack(Material.IRON_INGOT));
 		}
 

@@ -149,7 +149,9 @@ public class Listeners implements Listener {
 			EntityType playerEntityDisguise = DisguiseAPI.getDisguise(player).getType().getEntityType();
 			switch (playerEntityDisguise) {
 			case ENDERMAN:
-
+				if(player.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+					Drops.dropEndermanEndItems(player.getWorld(), playerLocation);
+				}
 				break;
 			default:
 				break;
