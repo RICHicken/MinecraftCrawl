@@ -171,9 +171,11 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD));
 		hunter.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
 		hunter.getInventory().addItem(Items.endermanPickUpBlockItem());
-		hunter.getInventory().setChestplate(Items.healthModStar(40));
 
-		//hunter.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 999999, 4));
+		if(!hunter.getWorld().equals(World.Environment.THE_END)) {
+			hunter.getInventory().setChestplate(Items.healthModStar(40));
+		}
+
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20, 4));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 99999, 0));
 		
@@ -276,7 +278,13 @@ public class Utils {
 	
 	
 	public static void giveItemBackAfter(Player player, Main plugin, ItemStack item, long cooldownTime) {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.getInventory().addItem(item), cooldownTime);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> giveHunterItem(player, item), cooldownTime);
+	}
+	
+	public static void giveHunterItem(Player player, ItemStack item) {
+		if(DisguiseAPI.isDisguised(player)) {
+			player.getInventory().addItem(item);
+		}
 	}
 	
 	public static void shootBlazeFireballVolley(Player hunter, Main plugin) {

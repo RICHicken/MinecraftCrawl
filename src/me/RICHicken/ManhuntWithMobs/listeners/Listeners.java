@@ -149,11 +149,7 @@ public class Listeners implements Listener {
 			EntityType playerEntityDisguise = DisguiseAPI.getDisguise(player).getType().getEntityType();
 			switch (playerEntityDisguise) {
 			case ENDERMAN:
-//					for(ItemStack i : player.getInventory().getContents()){
-//						if(i.getType() != Material.AIR && i.getType().isBlock() && (i.getType() != Material.BARRIER)){
-//							player.getWorld().dropItemNaturally(playerLocation, i);
-//						}
-//					}
+
 				break;
 			default:
 				break;
@@ -186,7 +182,7 @@ public class Listeners implements Listener {
 
 					while (playerIterator.hasNext()) {
 						Player p = playerIterator.next();
-						if (Helpers.hasHunterTag(p)) {
+						if (!p.isDead() && Helpers.hasHunterTag(p)) {
 							closestPlayer = p;
 							lowestDistance = p.getLocation().distance(player.getLocation());
 						}
@@ -211,8 +207,8 @@ public class Listeners implements Listener {
 					player.setHealth(20);
 					player.setFoodLevel(20);
 					event.setKeepInventory(true);
-					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName())
-							+ " has died, but nobody was around to claim the kill!");
+					event.setDeathMessage(ChatColor.GREEN + player.getDisplayName() + 
+							" has died, but nobody was around to claim the kill!");
 
 					// Otherwise it ain't so simple
 				} else {
@@ -220,7 +216,6 @@ public class Listeners implements Listener {
 
                     hunter.getInventory().setContents(playerInventory.getContents());
 					hunter.teleport(playerLocation);
-					hunter.setHealth(20);
 					hunter.setFoodLevel(20);
 					// Undisguise if disguised
 					if (DisguiseAPI.isDisguised(hunter)) {
@@ -230,10 +225,13 @@ public class Listeners implements Listener {
 					for (PotionEffect i : hunter.getActivePotionEffects()) {
 						hunter.removePotionEffect(i.getType());
 					}
+					hunter.setFlySpeed(0.1f);
 					hunter.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 99999, 0));
 					hunter.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 200));
+					hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 400, 0));
+					hunter.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 100, 200));
 					hunter.setGameMode(GameMode.SURVIVAL);
-					Bukkit.broadcastMessage((ChatColor.GREEN + player.getDisplayName()) + " has died and swapped with "
+					event.setDeathMessage((ChatColor.GREEN + player.getDisplayName()) + " has died and swapped with "
 							+ (ChatColor.GREEN + hunter.getDisplayName()) + "!");
 
 					// Player to Hunter
@@ -241,7 +239,7 @@ public class Listeners implements Listener {
 					Helpers.giveHunterTag(player, hunter);
 				}
 			} else {
-				Bukkit.broadcastMessage(ChatColor.AQUA + player.getDisplayName() + " died!");
+				event.setDeathMessage(ChatColor.AQUA + player.getDisplayName() + " died!");
 			}
 		}
 	}

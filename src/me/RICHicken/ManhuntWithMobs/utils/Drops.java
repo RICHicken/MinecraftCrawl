@@ -62,10 +62,21 @@ public class Drops {
 				break;
 			default:
 				break;
-		}
-		 */
+		}*/
+
 	}
-	
+
+	public void dropEndermanEndItems(World w, Location l){
+		Material[] drops = new Material[]{Material.OAK_LOG, Material.BREAD, Material.ARROW};
+
+		w.dropItemNaturally(l, new ItemStack(drops[new Random().nextInt(3)], 3));
+
+		if(Math.random() <= .1){
+			w.dropItemNaturally(l, new ItemStack(Material.IRON_INGOT));
+		}
+
+	}
+	/*
 	private static void phantom(World w, Location l) {
 		int count = new Random().nextInt(3);
 		
@@ -229,5 +240,6 @@ public class Drops {
 			ItemStack crossbow = Items.droppedPillagerCrossbow();
 			w.dropItemNaturally(l, crossbow);
 		}
-	}
+	}*/
 }
+
