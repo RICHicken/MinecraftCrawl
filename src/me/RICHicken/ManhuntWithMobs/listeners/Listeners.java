@@ -217,7 +217,12 @@ public class Listeners implements Listener {
 					// Hunter to Player
 
                     hunter.getInventory().setContents(playerInventory.getContents());
-					hunter.teleport(playerLocation);
+
+                    if(playerLocation.getY() >= 0){
+						hunter.teleport(playerLocation);
+					}else{
+                    	hunter.teleport(new Location(hunter.getWorld(),0, 90, 0));
+					}
 					hunter.setFoodLevel(20);
 					// Undisguise if disguised
 					if (DisguiseAPI.isDisguised(hunter)) {
