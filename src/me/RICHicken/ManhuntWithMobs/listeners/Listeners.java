@@ -91,17 +91,6 @@ public class Listeners implements Listener {
 			default:
 				break;
 			}
-
-			/*
-			 * long cooldown = 40; if(DisguiseAPI.getDisguise(hunter).getType() ==
-			 * DisguiseType.PILLAGER){ cooldown = 60; }
-			 * 
-			 * hunter.getInventory().remove(new ItemStack(Material.ARROW));
-			 * Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { public
-			 * void run() { hunter.getInventory().addItem(new ItemStack(Material.ARROW)); }
-			 * }, cooldown);
-			 */
-
 		}
 	}
 
@@ -399,58 +388,6 @@ public class Listeners implements Listener {
 						break;
 					}
 				}
-				/*
-				 * if (hunter.getInventory().getItemInMainHand().getType() ==
-				 * Material.GUNPOWDER) { Utils.creeperExplode(hunter);
-				 * 
-				 * } else if
-				 * (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.ENDERMAN)) {
-				 * if (hunter.getInventory().getItemInMainHand().getType() ==
-				 * Material.WOODEN_PICKAXE) { if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
-				 * { Block block = event.getClickedBlock(); Location loc = block.getLocation();
-				 * if (Utils.endermanGiveBlock(hunter, block.getType(), loc)) {
-				 * hunter.getInventory().removeItem(Items.endermanPickUpBlockItem()); } else {
-				 * hunter.sendMessage(ChatColor.LIGHT_PURPLE +
-				 * "You can not pick up this block!"); } }
-				 * 
-				 * } else if (hunter.getInventory().getItemInMainHand().getType().isBlock() &&
-				 * hunter.getInventory().getItemInMainHand().getType() != Material.AIR) {
-				 * ItemStack selectedBlock = hunter.getInventory().getItemInMainHand();
-				 * hunter.getLocation().getBlock().setType(selectedBlock.getType());
-				 * hunter.getInventory().removeItem(selectedBlock);
-				 * 
-				 * Utils.giveItemBackAfter(hunter, plugin, Items.endermanPickUpBlockItem(), 80);
-				 * } else if (hunter.getInventory().getItemInMainHand().getType() ==
-				 * Material.POPPED_CHORUS_FRUIT) { Utils.endermanTeleport(hunter);
-				 * hunter.getInventory().removeItem(Items.endermanTeleportItem());
-				 * 
-				 * } } else if
-				 * (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.BLAZE)) {
-				 * 
-				 * switch (hunter.getInventory().getItemInMainHand().getType()) { case
-				 * BLAZE_ROD:
-				 * 
-				 * Utils.shootBlazeFireballVolley(hunter, plugin);
-				 * Utils.putItemOnCooldown(hunter, plugin, Items.blazeFireBallItem(), 160);
-				 * 
-				 * break; case FEATHER: hunter.setVelocity(new Vector(0, 1.5, 0));
-				 * Utils.putItemOnCooldown(hunter, plugin, Items.blazeJump(), 100);
-				 * 
-				 * break; }
-				 * 
-				 * } else if
-				 * (DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.GHAST) &&
-				 * hunter.getInventory().getItemInMainHand().getType() == Material.GHAST_TEAR) {
-				 * 
-				 * hunter.launchProjectile(Fireball.class); Utils.putItemOnCooldown(hunter,
-				 * plugin, Items.ghastFireBallItem(), 45);
-				 * 
-				 * } else if (hunter.getInventory().getItemInMainHand().getType() ==
-				 * Material.PHANTOM_MEMBRANE &&
-				 * DisguiseAPI.getDisguise(hunter).getType().equals(DisguiseType.PHANTOM)) {
-				 * hunter.setVelocity(new Vector(0, 2.5, 0)); Utils.putItemOnCooldown(hunter,
-				 * plugin, Items.phantomJumpItem(), 160); }
-				 */
 			}
 		}
 	}

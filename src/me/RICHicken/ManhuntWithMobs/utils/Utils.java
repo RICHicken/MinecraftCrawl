@@ -26,22 +26,6 @@ public class Utils {
 	
 	public static boolean transform(Entity e, Player hunter) {
 		EntityType mob = e.getType();
-		/*
-		EntityType[] mobs = new EntityType[] {EntityType.BLAZE, EntityType.CAVE_SPIDER, EntityType.CREEPER, 
-				EntityType.ENDERMAN, EntityType.GHAST, EntityType.MAGMA_CUBE, EntityType.SILVERFISH,
-				EntityType.SKELETON, EntityType.SPIDER, EntityType.ZOMBIE, EntityType.PIG_ZOMBIE,
-				EntityType.WITHER_SKELETON, EntityType.PHANTOM, EntityType.DROWNED};
-		boolean success = false;
-		for(EntityType i : mobs) {
-			
-			if(i.equals(mob)) {
-				success = true;
-			}
-		}
-		
-		if(!success) {
-			return false;
-		}*/
 		
 		MobDisguise m;
 		hunter.getInventory().clear();
@@ -188,7 +172,6 @@ public class Utils {
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		hunter.getInventory().addItem(Items.ghastFireBallItem());
 		hunter.getInventory().setChestplate(Items.healthModStar(2));
-		//hunter.damage(18);
 
 		return new MobDisguise(DisguiseType.GHAST);	
 	}
@@ -198,14 +181,13 @@ public class Utils {
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 150));
 		hunter.getInventory().setChestplate(Items.healthModStar(16));
-		//hunter.damage(4);
 
 		return new MobDisguise(DisguiseType.MAGMA_CUBE);	
 	}
 	
 	private static MobDisguise silverfish(Player hunter) {
 		hunter.getInventory().setChestplate(Items.healthModStar(8));
-		//hunter.damage(12);
+		
 		return new MobDisguise(DisguiseType.SILVERFISH);	
 	}
 	
@@ -222,7 +204,6 @@ public class Utils {
 		hunter.getInventory().addItem(new ItemStack(Material.IRON_SWORD));
 		hunter.getInventory().addItem(Items.spiderClimb());
 		hunter.getInventory().setChestplate(Items.healthModStar(16));
-		//hunter.damage(4);
 
 		return new MobDisguise(DisguiseType.SPIDER);	
 	}
@@ -241,7 +222,6 @@ public class Utils {
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 99999, 0));
 		hunter.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 0));
 		hunter.getInventory().setChestplate(Items.healthModStar(10));
-		//hunter.damage(10);
 
 		return new MobDisguise(DisguiseType.PIG_ZOMBIE);
 	}
@@ -367,13 +347,6 @@ public class Utils {
 			player.setVelocity(new Vector(player.getVelocity().getX(), 0.3, player.getVelocity().getZ()));
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> spiderClimb(player, plugin), 5l);
 		}
-
-		/*
-		(Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 3 ||
-				Math.abs(Math.round(Math.abs(player.getLocation().getX() - Math.abs(player.getLocation().getBlockX())) * 10)) == 7 ||
-				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 3 ||
-				Math.abs(Math.round(Math.abs(player.getLocation().getZ()) - Math.abs(player.getLocation().getBlockZ()) * 10)) == 7)
-		 */
 	}
 
 	public static void dropWitchItems(int i1, int i2, int i3, World w, Location l){
